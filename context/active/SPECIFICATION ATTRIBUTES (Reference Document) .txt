@@ -127,3 +127,35 @@ SPECIFICATION_ATTRIBUTES:
       - none: "No certifications"
       - unknown: "Certification status unknown"
     applies_to: ["ALL"]
+
+  # === COORDINATES (for company location) ===
+  coordinates:
+    latitude:
+      description: "Decimal latitude of the company location."
+      format: "number"
+      range: [-90, 90]
+      examples: [50.8503, 51.2194]
+      notes:
+        - "Use decimal degrees, not degrees-minutes-seconds."
+        - "North is positive, South is negative."
+    longitude:
+      description: "Decimal longitude of the company location."
+      format: "number"
+      range: [-180, 180]
+      examples: [4.3517, 4.4025]
+      notes:
+        - "Use decimal degrees, not degrees-minutes-seconds."
+        - "East is positive, West is negative."
+    extraction_guidance:
+      source_priority:
+        - "Official company website contact/location page"
+        - "Google Maps place pin"
+        - "OpenStreetMap/Nominatim result"
+      method:
+        - "Find the exact postal address first."
+        - "Open map result for that address/place."
+        - "Extract decimal latitude and longitude from map details."
+        - "If multiple locations exist, prefer headquarters or site tied to the analyzed operations."
+      quality_checks:
+        - "Coordinates must be inside the stated country and city."
+        - "Do not guess; if unresolved, return null for both and explain in notes."

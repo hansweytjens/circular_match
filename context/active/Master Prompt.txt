@@ -167,7 +167,7 @@ CRITICAL OUTPUT HIERARCHY FOR OUTPUT STREAMS:
 - Output must use top-level `material_outputs` only.
 - In `material_outputs`, each object represents exactly one `material` and includes:
   - `rank` (1 = highest priority material stream)
-  - `produced_by_products` (which product/service IDs generate this material)
+  - `produced_by_products` (list of product/service names or IDs that generate this material)
   - `items` (all waste/by-product entries for that same material)
 - For each item in `items`:
   - Include `output_kind` as `waste_product` or `by_product`

@@ -29,10 +29,7 @@
       "rank": 1,
       "material": "PAPER.office",
       "produced_by_products": [
-        {
-          "product_id": "accounting_services",
-          "name": "Accounting Services"
-        }
+        "Accounting Services"
       ],
       "items": [
         {

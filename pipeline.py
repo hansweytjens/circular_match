@@ -138,9 +138,10 @@ def build_prompt(
             spec_section,
         )
 
+    excluded_context_files = {"Master Prompt.txt"}
     other_context = []
     for name, content in context_files.items():
-        if name == "Master Prompt.txt":
+        if name in excluded_context_files:
             continue
         other_context.append(f"### {name}\n{content}")
 
@@ -199,6 +200,30 @@ def parse_json_response(response_text: str) -> Any | None:
         return None
 
 
+def normalize_produced_by_products(payload: Any) -> Any:
+    if isinstance(payload, dict):
+        normalized: Dict[str, Any] = {}
+        for key, value in payload.items():
+            if key == "produced_by_products" and isinstance(value, list):
+                names: List[str] = []
+                for item in value:
+                    if isinstance(item, str):
+                        names.append(item)
+                    elif isinstance(item, dict):
+                        name = item.get("name") or item.get("product_id")
+                        if isinstance(name, str) and name:
+                            names.append(name)
+                normalized[key] = names
+            else:
+                normalized[key] = normalize_produced_by_products(value)
+        return normalized
+
+    if isinstance(payload, list):
+        return [normalize_produced_by_products(item) for item in payload]
+
+    return payload
+
+
 def run_pipeline(
     context_dir: Path,
     model: str,
@@ -250,6 +275,7 @@ def run_pipeline(
     with output_path.open("w", encoding="utf-8") as out:
         for idx, company in enumerate(companies, start=1):
             prompt = build_prompt(company, context_files, context_dir=context_dir)
+            #print(prompt)
             if dry_run:
                 response_text = "DRY_RUN: Gemini call skipped."
             else:
@@ -260,6 +286,8 @@ def run_pipeline(
                     schema=schema,
                 )
             response_json = parse_json_response(response_text)
+            if response_json is not None:
+                response_json = normalize_produced_by_products(response_json)
 
             record = {
                 "index": idx,

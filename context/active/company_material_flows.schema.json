@@ -9,13 +9,23 @@
     "company_profile": {
       "type": "object",
       "additionalProperties": true,
-      "required": ["company_id", "company_name", "address", "website", "coordinates"],
+      "required": ["company_name", "street", "postal_code", "city", "country", "website", "coordinates"],
       "properties": {
-        "company_id": { "type": "string" },
         "company_name": { "type": "string" },
-        "address": { "type": "object" },
+        "street": { "type": "string" },
+        "postal_code": { "type": "string" },
+        "city": { "type": "string" },
+        "country": { "type": "string" },
         "website": { "type": "string" },
-        "coordinates": { "type": "object" }
+        "coordinates": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["latitude", "longitude"],
+          "properties": {
+            "latitude": { "type": "number", "minimum": -90, "maximum": 90 },
+            "longitude": { "type": "number", "minimum": -180, "maximum": 180 }
+          }
+        }
       }
     },
     "products_and_services": {
@@ -24,9 +34,8 @@
       "items": {
         "type": "object",
         "additionalProperties": true,
-        "required": ["product_id", "name", "category", "volume_estimate"],
+        "required": ["name", "category", "volume_estimate"],
         "properties": {
-          "product_id": { "type": "string" },
           "name": { "type": "string" },
           "category": { "type": "string", "enum": ["product", "service"] },
           "volume_estimate": { "type": "string", "enum": ["large", "medium", "low"] }
@@ -38,20 +47,24 @@
       "items": {
         "type": "object",
         "additionalProperties": true,
-        "required": ["rank", "material", "items"],
+        "required": ["rank", "material", "output_kind", "name", "form", "treatment", "grade", "condition"],
         "properties": {
           "rank": { "type": "integer", "minimum": 1 },
           "material": { "type": "string" },
           "produced_by_products": {
-            "type": "array"
-          },
-          "items": {
             "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": true
-            }
-          }
+            "items": { "type": "string" }
+          },
+          "output_kind": { "type": "string" },
+          "name": { "type": "string" },
+          "form": { "type": "string" },
+          "treatment": { "type": "string" },
+          "grade": { "type": "string" },
+          "condition": { "type": "string" },
+          "size_dimensions": { "type": "string" },
+          "volume_estimate": { "type": "string", "enum": ["large", "medium", "low"] },
+          "notes": { "type": "string" },
+          "output_type": { "type": "string" }
         }
       }
     }
