@@ -1,0 +1,251 @@
+# PRODUCT_FORM_TAXONOMY.yaml
+# Version: 1.0
+# Purpose: Classify physical forms of materials for symbiosis matching
+
+PRODUCT_FORMS:
+
+  # === BULK/PARTICULATE FORMS ===
+  BULK:
+    POWDER:
+      powder.fine:
+        description: "Fine powder, typically <100 micron"
+        examples: ["flour", "iteiteiteiteiteite cement powder", "ite metal powder", "fine sawdust"]
+      powder.coarse:
+        description: "Coarse powder, typically >100 micron"
+        examples: ["granulated sugar", "coarse grinding dust"]
+      dust:
+        description: "Process dust, often uncontrolled byproduct"
+        examples: ["sanding dust", "grinding dust", "collection system fines"]
+        
+    GRANULAR:
+      granule:
+        description: "Pelletized or granulated, controlled size"
+        examples: ["plastic pellets", "fertilizer granules", "rubber granules"]
+      chip:
+        description: "Irregular small pieces from cutting/machining"
+        examples: ["wood chips", "metal chips", "machining swarf"]
+      turning:
+        description: "Spiral/curled pieces from lathe operations"
+        examples: ["metal turnings", "spiral swarf"]
+      flake:
+        description: "Thin irregular pieces"
+        examples: ["plastic flake", "metal flake", "paint flake"]
+      shred:
+        description: "Mechanically shredded material"
+        examples: ["shredded paper", "shredded plastic", "shredded textiles"]
+      crumb:
+        description: "Irregular granular from grinding"
+        examples: ["rubber crumb", "ground plastic"]
+        
+    FIBER:
+      fiber.loose:
+        description: "Uncompressed loose fibers"
+        examples: ["textile fibers", "insulation fibers", "cellulose fibers"]
+      fiber.baled:
+        description: "Compressed fiber bales"
+        examples: ["textile bales", "fiber bales"]
+        
+    AGGREGATE:
+      aggregate.coite coarse:
+        description: "Coarse aggregate >4mm"
+        examples: ["gravel", "crushed stone", "crushed concrete"]
+      aggregate.fine:
+        description: "Fine aggregate <4mm"
+        examples: ["sand", "fine crusite crushed material"]
+      aggregate.mixed:
+        description: "Unsorted mixed aggregate"
+        examples: ["mixed demolition aggregate", "unsorted fill"]
+
+  # === LIQUID FORMS ===
+  LIQUID:
+    liquid.bulk:
+      description: "Large quantity liquid, tank or tanker"
+      examples: ["bulk chemicals", "fuel", "bulk oils"]
+    liquid.drummed:
+      description: "Drum or IBC quantities (20-1000L)"
+      examples: ["drummed solvents", "IBC chemicals"]
+    liquid.packaged:
+      description: "Small packaged quantities (<20L)"
+      examples: ["bottled chemicals", "canned liquids"]
+    liquid.residual:
+      description: "Residual/waste liquid, often contaminated"
+      examples: ["sludge", "spent fluids", "tank bottoms"]
+    liquid.emulsion:
+      description: "Emulsified liquids"
+      examples: ["cutting fluid emulsion", "paint emulsion"]
+
+  # === DIMENSIONAL/SOLID FORMS ===
+  DIMENSIONAL:
+    SHEET:
+      sheet.flat:
+        description: "Flat sheet material, full size"
+        examples: ["steel sheet", "plywood sheet", "glass sheet"]
+      sheet.coil:
+        description: "Rolled/coiled sheet material"
+        examples: ["steel coil", "aluminum coil", "plastic film roll"]
+      sheet.offcut:
+        description: "Irregular sheet remnants from cutting"
+        examples: ["sheet metal offcuts", "plywood offcuts"]
+      sheet.plate:
+        description: "Thick flat plate material"
+        examples: ["steel plate", "aluminum plate"]
+        
+    BAR_ROD:
+      bar.solid:
+        description: "Solid bar or rod stock"
+        examples: ["steel bar", "aluminum rod", "brass bar"]
+      bar.hollow:
+        description: "Hollow tube or pipe"
+        examples: ["steel tube", "copper pipe", "plastic pipe"]
+      bar.offcut:
+        description: "Bar/rod end pieces and remnants"
+        examples: ["bar ends", "drop pieces"]
+        
+    BOARD:
+      board.solid:
+        description: "Solid wood or material board"
+        examples: ["solid timber", "hardwood board"]
+      board.engineered:
+        description: "Engineered board products"
+        examples: ["MDF", "particleboard", "plywood", "OSB"]
+      board.laminated:
+        description: "Laminated board products"
+        examples: ["melamine board", "HPL panels", "laminated panels"]
+      board.offcut:
+        description: "Board remnants and offcuts"
+        examples: ["panel offcuts", "board trim"]
+        
+    FILM:
+      film.roll:
+        description: "Rolled film material"
+        examples: ["stretch film roll", "shrink film", "plastic film roll"]
+      film.sheet:
+        description: "Flat film pieces/sheets"
+        examples: ["film sheets", "liner sheets"]
+      film.scrap:
+        description: "Film waste and offcuts"
+        examples: ["film trim", "edge trim", "film scrap"]
+        
+    PROFILE:
+      profile.extruded:
+        description: "Extruded profile shapes"
+        examples: ["aluminum extrusions", "plastic profiles", "rubber profiles"]
+      profile.rolled:
+        description: "Rolled profile shapes"
+        examples: ["steel angles", "channels", "I-beams"]
+      profile.offcut:
+        description: "Profile remnants and offcuts"
+        examples: ["extrusion ends", "profile trim"]
+        
+    BLOCK:
+      block:
+        description: "Solid block material"
+        examples: ["metal block", "plastic block", "foam block"]
+      block.offcut:
+        description: "Block remnants"
+        examples: ["block cutoffs", "machining blanks"]
+
+  # === FABRICATED FORMS ===
+  FABRICATED:
+    COMPONENT:
+      component.precision:
+        description: "Precision machined components"
+        examples: ["CNC parts", "precision turned parts"]
+      component.cast:
+        description: "Cast components"
+        examples: ["castings", "molded parts"]
+      component.formed:
+        description: "Stamped, bent, or formed components"
+        examples: ["stampings", "bent parts", "formed brackets"]
+      component.assembled:
+        description: "Sub-assembled components"
+        examples: ["sub-assemblies", "component assemblies"]
+      component.reject:
+        description: "Off-spec or rejected components"
+        examples: ["QC rejects", "off-spec parts", "defective parts"]
+        
+    ASSEMBLY:
+      assembly.partial:
+        description: "Partially assembled products"
+        examples: ["sub-assemblies", "modules"]
+      assembly.complete:
+        description: "Fully assembled products"
+        examples: ["finished products", "complete assemblies"]
+      assembly.defective:
+        description: "Failed or defective assemblies"
+        examples: ["QC failures", "warranty returns"]
+
+  # === PACKAGING FORMS ===
+  PACKAGING:
+    packaging.primary:
+      description: "Product-contact packaging"
+      examples: ["bottles", "bags", "wraps", "containers"]
+    packaging.secondary:
+      description: "Boxes, cartons, intermediate packaging"
+      examples: ["cardboard boxes", "cases", "trays"]
+    packaging.tertiary:
+      description: "Transport/logistics packaging"
+      examples: ["pallets", "stretch wrap", "strapping", "edge protectors"]
+    packaging.used:
+      description: "Post-use packaging materials"
+      examples: ["used boxes", "used pallets", "used film"]
+    packaging.damaged:
+      description: "Damaged packaging"
+      examples: ["broken pallets", "damaged boxes"]
+
+  # === PRODUCT STATES ===
+  PRODUCT_STATE:
+    product.new:
+      description: "Virgin, unused product"
+      examples: ["new stock", "finished goods"]
+    product.excess:
+      description: "Overstock, surplus inventory"
+      examples: ["excess inventory", "overruns"]
+    product.offspec:
+      description: "Out of specification products"
+      examples: ["off-spec production", "cosmetic seconds"]
+    product.damaged:
+      description: "Damaged but material recoverable"
+      examples: ["damaged goods", "transit damage"]
+    product.expired:
+      description: "Past use-by date (for applicable goods)"
+      examples: ["expired food", "expired chemicals"]
+    product.eol:
+      description: "End-of-life products"
+      examples: ["returned products", "take-back items"]
+
+  # === WASTE/MIXED FORMS ===
+  WASTE:
+    waste.source_separated:
+      description: "Single-stream separated waste"
+      examples: ["separated recyclables", "single-material waste"]
+    waste.mixed:
+      description: "Mixed unsorted waste"
+      examples: ["mixed waste", "general waste"]
+    waste.baled:
+      description: "Compressed baled waste"
+      examples: ["baled cardboard", "baled plastic"]
+    waste.containerized:
+      description: "Waste in containers/skips"
+      examples: ["skip waste", "container waste"]
+    waste.hazardous:
+      description: "Hazardous waste requiring special handling"
+      examples: ["chemical waste", "contaminated materials"]
+
+  # === ORGANIC SPECIFIC ===
+  ORGANIC:
+    organic.whole:
+      description: "Whole organic items"
+      examples: ["whole fruits", "whole vegetables", "whole animals"]
+    organic.processed:
+      description: "Processed organic material"
+      examples: ["cut vegetables", "processed food"]
+    organic.residue:
+      description: "Organic processing residues"
+      examples: ["peels", "pulp", "pomace", "press cake"]
+    organic.spoiled:
+      description: "Spoiled organic material"
+      examples: ["spoiled food", "expired organics"]
+    organic.composting:
+      description: "Organics suitable for composting"
+      examples: ["green waste", "food waste", "garden waste"]

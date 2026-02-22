@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/company_material_flows.schema.json",
+  "title": "Company material flows (material-first outputs)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["company_profile", "products_and_services", "material_outputs"],
+  "properties": {
+    "company_profile": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["company_id", "company_name", "address", "website", "coordinates"],
+      "properties": {
+        "company_id": { "type": "string" },
+        "company_name": { "type": "string" },
+        "address": { "type": "object" },
+        "website": { "type": "string" },
+        "coordinates": { "type": "object" }
+      }
+    },
+    "products_and_services": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["product_id", "name", "category", "volume_estimate"],
+        "properties": {
+          "product_id": { "type": "string" },
+          "name": { "type": "string" },
+          "category": { "type": "string", "enum": ["product", "service"] },
+          "volume_estimate": { "type": "string", "enum": ["large", "medium", "low"] }
+        }
+      }
+    },
+    "material_outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["rank", "material", "items"],
+        "properties": {
+          "rank": { "type": "integer", "minimum": 1 },
+          "material": { "type": "string" },
+          "produced_by_products": {
+            "type": "array"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

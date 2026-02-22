@@ -1,0 +1,31 @@
+{
+  "treatment": {
+    "untreated": "No chemical or surface treatment",
+    "treated": "Chemical treatment (pressure-treated, fire-retardant)",
+    "painted": "Surface painted",
+    "coated": "Surface coating (powder coat, galvanized, anodized)",
+    "laminated": "Laminate surface applied",
+    "contaminated": "Mixed treatments or contamination present",
+    "unknown": "Cannot determine"
+  },
+  "grade": {
+    "virgin": "New, unused material",
+    "clean": "Post-industrial, single-stream, uncontaminated",
+    "mixed": "Multiple grades/types mixed together",
+    "contaminated": "Contains problematic contaminants",
+    "unknown": "Cannot determine"
+  },
+  "condition": {
+    "new": "Unused",
+    "production_scrap": "Generated during production, never used",
+    "post_industrial": "Waste from industrial processes",
+    "post_consumer": "End-of-life from consumers",
+    "damaged": "Physically damaged but material recoverable",
+    "wet": "Moisture state: wet (for organics, paper)",
+    "dry": "Moisture state: dry (for organics, paper)",
+    "unknown": "Cannot determine"
+  },
+  "size_dimensions": {
+    "description": "Free text describing size range or dimensions (e.g., \"20-50mm chips\", \"1200x2400mm sheets\", \"< 100 micron\")."
+  }
+}

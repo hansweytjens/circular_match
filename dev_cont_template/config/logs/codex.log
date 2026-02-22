@@ -1,0 +1,133 @@
+2026-02-18 21:44:41 | WARNING  | Cannot detect or read from CBR archives
+2026-02-18 21:44:41 | INFO     | Starting Codex v1.9.16
+2026-02-18 21:44:41 | INFO     | Ensuring database is correct and up to date...
+2026-02-18 21:44:46 | SUCCESS  | Database ready.
+2026-02-18 21:44:46 | SUCCESS  | Created admin user.
+2026-02-18 21:44:46 | INFO     | Created AdminFlag: Auto Update = False
+2026-02-18 21:44:46 | INFO     | Created AdminFlag: Banner Text = True
+2026-02-18 21:44:46 | INFO     | Created AdminFlag: Folder View = True
+2026-02-18 21:44:46 | INFO     | Created AdminFlag: Import Metadata = True
+2026-02-18 21:44:46 | INFO     | Created AdminFlag: Lazy Import Metadata = True
+2026-02-18 21:44:46 | INFO     | Created AdminFlag: Non Users = True
+2026-02-18 21:44:46 | INFO     | Created AdminFlag: Registration = True
+2026-02-18 21:44:46 | INFO     | Created AdminFlag: Send Telemetry = True
+2026-02-18 21:44:46 | INFO     | Created Custom Covers Dir settings in the db.
+2026-02-18 21:44:46 | INFO     | Created 1 missing auth tokens for users.
+2026-02-18 21:44:46 | INFO     | root_path: 
+2026-02-18 21:44:46 | SUCCESS  | Running Codex v1.9.16
+2026-02-18 21:44:46 | SUCCESS  | BroadcastListener started.
+2026-02-18 21:44:46 | INFO     | LibrarianDaemon started all threads.
+2026-02-18 21:44:46 | SUCCESS  | LibrarianDaemon ready for tasks.
+2026-02-18 21:44:46 | INFO     | Started watching library /workspace/config/custom-covers with poll
+2026-02-18 21:44:46 | INFO     | Library /workspace/config/custom-covers waiting for manual poll.
+2026-02-18 21:44:46 | INFO     | Looking for search entries to update since the fracturing of the multiverse...
+2026-02-18 21:44:46 | INFO     | Looking for missing search entries to create...
+2026-02-18 21:44:46 | SUCCESS  | Search index found to be already synced in a moment.
+2026-02-18 21:44:54 | INFO     | Saved new latest codex version 1.9.16.
+2026-02-18 21:44:54 | INFO     | Checked Codex latest version in a moment.
+2026-02-18 21:59:56 | WARNING  | Cannot detect or read from CBR archives
+2026-02-18 21:59:56 | INFO     | Starting Codex v1.9.16
+2026-02-18 21:59:56 | INFO     | Ensuring database is correct and up to date...
+2026-02-18 21:59:57 | SUCCESS  | Database ready.
+2026-02-18 21:59:57 | INFO     | Created 0 missing auth tokens for users.
+2026-02-18 21:59:57 | INFO     | root_path: 
+2026-02-18 21:59:57 | SUCCESS  | Running Codex v1.9.16
+2026-02-18 21:59:57 | SUCCESS  | BroadcastListener started.
+2026-02-18 21:59:57 | INFO     | LibrarianDaemon started all threads.
+2026-02-18 21:59:57 | SUCCESS  | LibrarianDaemon ready for tasks.
+2026-02-18 21:59:57 | INFO     | Started watching library /workspace/config/custom-covers with poll
+2026-02-18 21:59:57 | INFO     | Library /workspace/config/custom-covers waiting for manual poll.
+2026-02-18 21:59:57 | INFO     | Looking for search entries to update since the fracturing of the multiverse...
+2026-02-18 21:59:57 | INFO     | Looking for missing search entries to create...
+2026-02-18 21:59:57 | SUCCESS  | Search index found to be already synced in a moment.
+2026-02-19 00:00:01 | INFO     | Checked Codex latest version in a moment.
+2026-02-19 00:00:01 | SUCCESS  | Database passed foreign key check.
+2026-02-19 00:00:01 | INFO     | Checked integrtity of database foreign keys in a moment.
+2026-02-19 00:00:01 | SUCCESS  | Database passed integrity check.
+2026-02-19 00:00:01 | INFO     | Checked integrity of entire database in a moment.
+2026-02-19 00:00:01 | SUCCESS  | Full Text Search Index passed integrity check.
+2026-02-19 00:00:01 | INFO     | Checked integrity of full text virtual table in a moment.
+2026-02-19 00:00:01 | INFO     | Looking for search entries to update since the fracturing of the multiverse...
+2026-02-19 00:00:01 | INFO     | Looking for missing search entries to create...
+2026-02-19 00:00:01 | SUCCESS  | Search index found to be already synced in a moment.
+2026-02-19 00:00:01 | INFO     | Optimized search virtual table in a moment.
+2026-02-19 00:00:01 | INFO     | Vacuumed database. Saved 16.4 kB.
+2026-02-19 00:00:01 | INFO     | Optimized database in a moment.
+2026-02-19 00:00:01 | INFO     | Backed up database to /workspace/config/backups/codex.sqlite3.bak
+2026-02-19 00:00:01 | INFO     | Backed up database in a moment.
+2026-02-20 00:00:01 | SUCCESS  | Database passed foreign key check.
+2026-02-20 00:00:01 | INFO     | Checked integrtity of database foreign keys in a moment.
+2026-02-20 00:00:01 | SUCCESS  | Database passed integrity check.
+2026-02-20 00:00:01 | INFO     | Checked integrity of entire database in a moment.
+2026-02-20 00:00:01 | SUCCESS  | Full Text Search Index passed integrity check.
+2026-02-20 00:00:01 | INFO     | Checked integrity of full text virtual table in a moment.
+2026-02-20 00:00:01 | INFO     | Saved new latest codex version 1.9.16.
+2026-02-20 00:00:01 | INFO     | Checked Codex latest version in a moment.
+2026-02-20 00:00:01 | INFO     | Looking for search entries to update since the fracturing of the multiverse...
+2026-02-20 00:00:01 | INFO     | Looking for missing search entries to create...
+2026-02-20 00:00:01 | SUCCESS  | Search index found to be already synced in a moment.
+2026-02-20 00:00:01 | INFO     | Optimized search virtual table in a moment.
+2026-02-20 00:00:01 | INFO     | Vacuumed database. Saved 0 Bytes.
+2026-02-20 00:00:01 | INFO     | Optimized database in a moment.
+2026-02-20 00:00:01 | INFO     | Backed up database to /workspace/config/backups/codex.sqlite3.bak
+2026-02-20 00:00:01 | INFO     | Backed up database in a moment.
+2026-02-21 16:04:16 | WARNING  | Cannot detect or read from CBR archives
+2026-02-21 16:04:16 | INFO     | Starting Codex v1.9.16
+2026-02-21 16:04:16 | INFO     | Ensuring database is correct and up to date...
+2026-02-21 16:04:16 | SUCCESS  | Database ready.
+2026-02-21 16:04:16 | INFO     | Created 0 missing auth tokens for users.
+2026-02-21 16:04:16 | INFO     | root_path: 
+2026-02-21 16:04:16 | SUCCESS  | Running Codex v1.9.16
+2026-02-21 16:04:16 | SUCCESS  | BroadcastListener started.
+2026-02-21 16:04:16 | INFO     | LibrarianDaemon started all threads.
+2026-02-21 16:04:16 | SUCCESS  | LibrarianDaemon ready for tasks.
+2026-02-21 16:04:16 | INFO     | Started watching library /workspace/config/custom-covers with poll
+2026-02-21 16:04:16 | INFO     | Library /workspace/config/custom-covers waiting for manual poll.
+2026-02-21 16:04:16 | INFO     | Looking for search entries to update since the fracturing of the multiverse...
+2026-02-21 16:04:16 | INFO     | Looking for missing search entries to create...
+2026-02-21 16:04:16 | SUCCESS  | Search index found to be already synced in a moment.
+2026-02-21 16:08:44 | WARNING  | Cannot detect or read from CBR archives
+2026-02-21 16:08:44 | INFO     | Starting Codex v1.9.16
+2026-02-21 16:08:44 | INFO     | Ensuring database is correct and up to date...
+2026-02-21 16:08:44 | SUCCESS  | Database ready.
+2026-02-21 16:08:44 | INFO     | Created 0 missing auth tokens for users.
+2026-02-21 16:08:44 | INFO     | root_path: 
+2026-02-21 16:08:44 | SUCCESS  | Running Codex v1.9.16
+2026-02-21 16:08:44 | SUCCESS  | BroadcastListener started.
+2026-02-21 16:08:44 | INFO     | LibrarianDaemon started all threads.
+2026-02-21 16:08:44 | SUCCESS  | LibrarianDaemon ready for tasks.
+2026-02-21 16:08:44 | INFO     | Started watching library /workspace/config/custom-covers with poll
+2026-02-21 16:08:44 | INFO     | Library /workspace/config/custom-covers waiting for manual poll.
+2026-02-21 16:08:44 | INFO     | Looking for search entries to update since the fracturing of the multiverse...
+2026-02-21 16:08:44 | INFO     | Looking for missing search entries to create...
+2026-02-21 16:08:44 | SUCCESS  | Search index found to be already synced in a moment.
+2026-02-21 16:33:55 | WARNING  | Cannot detect or read from CBR archives
+2026-02-21 16:33:55 | INFO     | Starting Codex v1.9.16
+2026-02-21 16:33:55 | INFO     | Ensuring database is correct and up to date...
+2026-02-21 16:33:55 | SUCCESS  | Database ready.
+2026-02-21 16:33:56 | INFO     | Created 0 missing auth tokens for users.
+2026-02-21 16:33:56 | INFO     | root_path: 
+2026-02-21 16:33:56 | SUCCESS  | Running Codex v1.9.16
+2026-02-21 16:33:56 | SUCCESS  | BroadcastListener started.
+2026-02-21 16:33:56 | INFO     | LibrarianDaemon started all threads.
+2026-02-21 16:33:56 | SUCCESS  | LibrarianDaemon ready for tasks.
+2026-02-21 16:33:56 | INFO     | Started watching library /workspace/config/custom-covers with poll
+2026-02-21 16:33:56 | INFO     | Library /workspace/config/custom-covers waiting for manual poll.
+2026-02-21 16:33:56 | INFO     | Looking for search entries to update since the fracturing of the multiverse...
+2026-02-21 16:33:56 | INFO     | Looking for missing search entries to create...
+2026-02-21 16:33:56 | SUCCESS  | Search index found to be already synced in a moment.
+2026-02-21 16:41:05 | WARNING  | Cannot detect or read from CBR archives
+2026-02-21 16:41:05 | INFO     | Starting Codex v1.9.16
+2026-02-21 16:41:05 | INFO     | Ensuring database is correct and up to date...
+2026-02-21 16:41:05 | SUCCESS  | Database ready.
+2026-02-21 16:41:05 | INFO     | Created 0 missing auth tokens for users.
+2026-02-21 16:41:05 | INFO     | root_path: 
+2026-02-21 16:41:05 | SUCCESS  | Running Codex v1.9.16
+2026-02-21 16:41:05 | SUCCESS  | BroadcastListener started.
+2026-02-21 16:41:05 | INFO     | LibrarianDaemon started all threads.
+2026-02-21 16:41:05 | SUCCESS  | LibrarianDaemon ready for tasks.
+2026-02-21 16:41:05 | INFO     | Started watching library /workspace/config/custom-covers with poll
+2026-02-21 16:41:05 | INFO     | Library /workspace/config/custom-covers waiting for manual poll.
+2026-02-21 16:41:05 | INFO     | Looking for search entries to update since the fracturing of the multiverse...
+2026-02-21 16:41:05 | INFO     | Looking for missing search entries to create...
+2026-02-21 16:41:05 | SUCCESS  | Search index found to be already synced in a moment.

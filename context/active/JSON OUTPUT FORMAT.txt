@@ -1,0 +1,77 @@
+{
+  "company_profile": {
+    "company_id": "ABP-Aalst-001",
+    "company_name": "A & B Partners Aalst",
+    "address": {
+      "street": "Leopoldlaan 100",
+      "postal_code": "9300",
+      "city": "Aalst",
+      "region": "Flanders",
+      "country": "Belgium"
+    },
+    "website": "https://abpartners.be/",
+    "coordinates": {
+      "lat": 50.9388,
+      "lon": 4.0418
+    }
+  },
+  "products_and_services": [
+    {
+      "product_id": "accounting_services",
+      "name": "Accounting Services",
+      "category": "service",
+      "description": "Complete accounting processing and reporting.",
+      "volume_estimate": "medium"
+    }
+  ],
+  "material_outputs": [
+    {
+      "rank": 1,
+      "material": "PAPER.office",
+      "produced_by_products": [
+        {
+          "product_id": "accounting_services",
+          "name": "Accounting Services"
+        }
+      ],
+      "items": [
+        {
+          "id": "WP001",
+          "output_kind": "waste_product",
+          "name": "Shredded Office Paper",
+          "output_type": "Paper Waste",
+          "notes": "Generated from administrative activities.",
+          "volume_estimate": "low",
+          "produced_by_products": [
+            "accounting_services"
+          ],
+          "properties": {
+            "form": "shred",
+            "treatment": "untreated",
+            "grade": "mixed",
+            "condition": "post_industrial",
+            "size_dimensions": "Mixed shredded paper"
+          }
+        },
+        {
+          "id": "BP001",
+          "output_kind": "by_product",
+          "name": "Reusable Cardboard Fill",
+          "output_type": "Secondary Packaging",
+          "notes": "Potentially reusable in local exchanges.",
+          "volume_estimate": "low",
+          "produced_by_products": [
+            "accounting_services"
+          ],
+          "properties": {
+            "form": "packaging.secondary",
+            "treatment": "untreated",
+            "grade": "clean",
+            "condition": "post_industrial",
+            "size_dimensions": "Assorted box fill sizes"
+          }
+        }
+      ]
+    }
+  ]
+}

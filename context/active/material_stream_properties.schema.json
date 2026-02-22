@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/material_stream_properties.schema.json",
+  "title": "Material Stream Properties",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["material", "form", "treatment", "grade", "condition"],
+  "properties": {
+    "material": {
+      "type": "string",
+      "description": "Layer 1: Material Taxonomy code (e.g., WOOD.waste, MET.steel.scrap, POLY.PE)."
+    },
+    "form": {
+      "type": "string",
+      "description": "Layer 2: Product/Form Taxonomy code (e.g., chip, sheet.offcut, film.roll, powder.fine)."
+    },
+    "treatment": {
+      "type": "string",
+      "enum": ["untreated", "treated", "painted", "coated", "laminated", "contaminated", "unknown"]
+    },
+    "grade": {
+      "type": "string",
+      "enum": ["virgin", "clean", "mixed", "contaminated", "unknown"]
+    },
+    "condition": {
+      "type": "string",
+      "enum": [
+        "new",
+        "production_scrap",
+        "post_industrial",
+        "post_consumer",
+        "damaged",
+        "wet",
+        "dry",
+        "unknown"
+      ]
+    },
+    "size_dimensions": {
+      "type": "string",
+      "description": "Free text size/dimensions when relevant (e.g., \"20-50mm chips\", \"1200x2400mm sheets\", \"< 100 micron\")."
+    }
+  }
+}

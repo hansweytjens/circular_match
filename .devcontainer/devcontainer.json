@@ -1,0 +1,37 @@
+{
+  "name": "Python Dev Container",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
+  },
+
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    }
+  },
+
+  // Persist auth across rebuilds
+  "mounts": [
+    "source=codex-auth,target=/root/.codex,type=volume",
+    "source=claude-auth,target=/root/.claude,type=volume"
+  ],
+
+"postCreateCommand": "bash -lc 'python -m pip install -U pip; python -m pip install -U codex; npm install -g @anthropic-ai/claude-code; ln -sf $(which claude) /usr/local/bin/claude'",
+"remoteEnv": {
+    "PATH": "/usr/local/bin:${containerEnv:PATH}"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "openai.chatgpt",
+        "anthropic.claude-code"
+      ]
+    }
+  }
+}

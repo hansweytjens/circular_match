@@ -1,0 +1,157 @@
+# MATERIAL_TAXONOMY.yaml
+# Version: 1.0
+# Purpose: Hierarchical classification of material types for industrial symbiosis
+
+MATERIALS:
+
+  # === ORGANIC MATERIALS ===
+  ORGANIC:
+    WOOD:
+      - WOOD.virgin          # Untreated timber, lumber
+      - WOOD.treated         # Pressure-treated, painted, coated
+      - WOOD.waste           # Sawdust, shavings, offcuts, pallets
+    FOOD:
+      - FOOD.raw             # Unprocessed agricultural products
+      - FOOD.processed       # Food production residues
+      - FOOD.waste           # Expired, spoiled, preparation waste
+    AGRICULTURAL:
+      - AGRI.crops           # Grains, vegetables, fruits
+      - AGRI.residues        # Straw, husks, shells, stems
+      - AGRI.animal          # Manure, slaughterhouse byproducts
+    TEXTILES:
+      - TEXT.natural         # Cotton, wool, linen, hemp
+      - TEXT.synthetic       # Polyester, nylon (see also POLYMERS)
+      - TEXT.mixed           # Blended fabrics
+      - TEXT.waste           # Cuttings, end-of-life textiles
+
+
+  # === METALS ===
+  METALS:
+    FERROUS:
+      - MET.steel.virgin     # New steel stock
+      - MET.steel.scrap      # Steel scrap, turnings, offcuts
+      - MET.iron.cast        # Cast iron
+      - MET.iron.scrap       # Iron scrap
+    NON_FERROUS:
+      - MET.aluminum.virgin
+      - MET.aluminum.scrap
+      - MET.copper.virgin
+      - MET.copper.scrap
+      - MET.brass
+      - MET.bronze
+      - MET.zinc
+      - MET.lead             # Note: hazardous material handling
+    PRECIOUS_SPECIALTY:
+      - MET.stainless        # Stainless steel
+      - MET.precious         # Gold, silver, platinum (recovery)
+      - MET.rare             # Rare earth elements
+
+
+  # === POLYMERS ===
+  POLYMERS:
+    THERMOPLASTICS:
+      - POLY.PE              # Polyethylene (HDPE, LDPE)
+      - POLY.PP              # Polypropylene
+      - POLY.PET             # Polyethylene terephthalate
+      - POLY.PVC             # Polyvinyl chloride
+      - POLY.PS              # Polystyrene
+      - POLY.ABS             # ABS plastic
+      - POLY.other_thermo
+    THERMOSETS:
+      - POLY.epoxy
+      - POLY.polyurethane
+      - POLY.phenolic
+      - POLY.other_thermoset
+    RUBBER_ELASTOMERS:
+      - POLY.rubber.natural
+      - POLY.rubber.synthetic
+      - POLY.rubber.waste    # Tires, seals, gaskets
+
+
+  # === MINERALS ===
+  MINERALS:
+    GLASS:
+      - MIN.glass.flat       # Window, sheet glass
+      - MIN.glass.container  # Bottles, jars
+      - MIN.glass.specialty  # Borosilicate, tempered
+      - MIN.glass.cullet     # Crushed glass waste
+    CERAMICS:
+      - MIN.ceramic.tech     # Technical ceramics
+      - MIN.ceramic.trad     # Traditional (tiles, pottery)
+      - MIN.ceramic.waste
+    CONCRETE_CEMENT:
+      - MIN.concrete.fresh
+      - MIN.concrete.waste   # Demolition concrete
+      - MIN.cement
+      - MIN.ite aggregates        # Sand, gravel
+    STONE:
+      - MIN.stone.natural    # Granite, marble, limestone
+      - MIN.stone.aggregate  # Gravel, sand
+      - MIN.stone.crushed
+
+
+  # === PAPER & CARDBOARD ===
+  PAPER_CARDBOARD:
+    - PAPER.virgin           # New paper/cardboard
+    - PAPER.office           # White office paper
+    - PAPER.cardboard        # Corrugated, solid board
+    - PAPER.mixed            # Mixed paper grades
+    - PAPER.contaminated     # Food-soiled, waxed, laminated
+
+
+  # === CHEMICALS ===
+  CHEMICALS:
+    SOLVENTS:
+      - CHEM.solvent.aqueous      # Water-based
+      - CHEM.solvent.organic      # Organic solvents
+      - CHEM.solvent.waste        # Spent solvents
+    ACIDS_BASES:
+      - CHEM.acid                 # Industrial acids
+      - CHEM.base                 # Alkalis, bases
+      - CHEM.neutralized          # Neutralized solutions
+    COATINGS_PAINTS:
+      - CHEM.paint.liquid
+      - CHEM.paint.powder
+      - CHEM.coating.waste        # Paint sludge, overspray
+    LUBRICANTS_OILS:
+      - CHEM.oil.hydraulic
+      - CHEM.oil.cutting          # Metalworking fluids
+      - CHEM.oil.lubricant
+      - CHEM.oil.waste            # Used oils
+      - CHEM.grease
+    ADHESIVES:
+      - CHEM.adhesive.water_based
+      - CHEM.adhesive.solvent_based
+      - CHEM.adhesive.hotmelt
+    OTHER_CHEMICALS:
+      - CHEM.catalyst
+      - CHEM.resin
+      - CHEM.additive
+
+
+  # === COMPOSITES & MIXED MATERIALS ===
+  COMPOSITES_MIXED:
+    CONSTRUCTION_DEMOLITION:
+      - COMP.cdw.mixed       # Mixed construction waste
+      - COMP.cdw.wood        # Construction wood waste
+      - COMP.cdw.mineral     # Bricks, tiles, concrete mix
+      - COMP.insulation      # Insulation materials
+    ELECTRONIC:
+      - COMP.weee.mixed      # Mixed e-waste
+      - COMP.weee.pcb        # Circuit boards
+      - COMP.weee.cables     # Wiring, cables
+      - COMP.weee.batteries  # Batteries (hazardous)
+    PACKAGING:
+      - COMP.pack.mixed      # Mixed packaging waste
+      - COMP.pack.multi      # Multi-material packaging
+
+
+  # === ENERGY/UTILITY CARRIERS (for completeness) ===
+  ENERGY_CARRIERS:
+    - ENERGY.steam
+    - ENERGY.hot_water
+    - ENERGY.compressed_air
+    - ENERGY.electricity
+    - WATER.process
+    - WATER.cooling
+    - WATER.wastewater

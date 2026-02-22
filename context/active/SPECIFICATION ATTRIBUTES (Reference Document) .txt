@@ -1,0 +1,129 @@
+# SPECIFICATION_ATTRIBUTES.yaml
+# Version: 1.0
+# Purpose: Standard attributes for material specifications
+
+SPECIFICATION_ATTRIBUTES:
+
+  # === TREATMENT STATUS ===
+  treatment:
+    values:
+      - untreated: "No chemical or surface treatment applied"
+      - treated: "Chemical treatment (pressure-treated, fire-retardant, etc.)"
+      - painted: "Surface painted"
+      - powder_coated: "Powder coating applied"
+      - galvanized: "Galvanized (zinc coating)"
+      - anodized: "Anodized (for aluminum)"
+      - plated: "Electroplated"
+      - laminated: "Laminate surface applied"
+      - varnished: "Varnish or lacquer coating"
+      - oiled: "Oil finish applied"
+      - mixed_treatment: "Multiple or unknown treatments present"
+      - contaminated: "Contaminated with problematic substances"
+      - unknown: "Treatment status unknown"
+    applies_to: ["WOOD", "METALS", "PAPER", "TEXTILES"]
+
+  # === MATERIAL GRADE ===
+  grade:
+    values:
+      - virgin: "New, unused, primary material"
+      - prime: "First-quality material meeting all specs"
+      - secondary: "Second-quality, minor defects"
+      - clean_scrap: "Post-industrial, single-stream, uncontaminated"
+      - mixed: "Multiple grades or types mixed"
+      - contaminated: "Contains problematic contaminants"
+      - food_grade: "Certified for food contact"
+      - pharmaceutical_grade: "Certified for pharmaceutical use"
+      - technical_grade: "Industrial/technical quality"
+      - unknown: "Grade unknown"
+    applies_to: ["ALL"]
+
+  # === CONDITION ===
+  condition:
+    values:
+      - new: "Unused material"
+      - production_scrap: "Generated during production, never used in product"
+      - post_industrial: "Waste from industrial processes"
+      - post_consumer: "End-of-life from consumers"
+      - pre_consumer: "Waste before reaching consumer"
+      - reclaimed: "Recovered from previous use"
+      - recycled: "Previously recycled material"
+      - damaged: "Physically damaged but material recoverable"
+      - degraded: "Material properties degraded"
+      - unknown: "Condition unknown"
+    applies_to: ["ALL"]
+
+  # === MOISTURE (for organics, paper, wood) ===
+  moisture:
+    values:
+      - dry: "<15% moisture content"
+      - air_dry: "15-20% moisture content"
+      - green: ">20% moisture content"
+      - wet: "Saturated or very high moisture"
+      - unknown: "Moisture unknown"
+    applies_to: ["WOOD", "PAPER", "ORGANIC", "TEXTILES"]
+
+  # === CONTAMINATION ===
+  contamination:
+    values:
+      - none: "No contamination"
+      - minor: "Minor contamination, easily cleaned"
+      - moderate: "Moderate contamination, cleaning required"
+      - heavy: "Heavy contamination, significant processing needed"
+      - hazardous: "Hazardous contamination present"
+      - unknown: "Contamination status unknown"
+    contaminant_types:
+      - oil_grease: "Oil or grease contamination"
+      - paint: "Paint contamination"
+      - adhesive: "Adhesive residue"
+      - food: "Food contamination"
+      - chemical: "Chemical contamination"
+      - biological: "Biological contamination"
+      - metal_fines: "Metal particle contamination"
+      - mixed: "Multiple contaminants"
+    applies_to: ["ALL"]
+
+  # === SIZE/DIMENSIONS ===
+  size:
+    format: "Free text describing dimensions or size range"
+    examples:
+      - "20-50mm chips"
+      - "1200x2400mm sheets"
+      - "<100 micron powder"
+      - "Mixed sizes"
+      - "Standard pallet size (1200x800mm)"
+    applies_to: ["ALL"]
+
+  # === ALLOY/COMPOSITION (for metals) ===
+  alloy_composition:
+    format: "Specific alloy designation or composition"
+    examples:
+      - "6061-T6"
+      - "304 stainless"
+      - "C11000 copper"
+      - "Mixed ferrous"
+      - "Segregated by alloy"
+    applies_to: ["METALS"]
+
+  # === POLYMER TYPE (for plastics) ===
+  polymer_type:
+    format: "Specific polymer or resin code"
+    examples:
+      - "HDPE (resin code 2)"
+      - "PP homopolymer"
+      - "PET clear"
+      - "Mixed plastics"
+      - "ABS natural"
+    applies_to: ["POLYMERS"]
+
+  # === CERTIFICATIONS ===
+  certifications:
+    values:
+      - fsc: "FSC certified (wood)"
+      - pefc: "PEFC certified (wood)"
+      - food_contact: "Food contact certified"
+      - reach_compliant: "REACH compliant"
+      - rohs_compliant: "RoHS compliant"
+      - recycled_content: "Certified recycled content"
+      - none: "No certifications"
+      - unknown: "Certification status unknown"
+    applies_to: ["ALL"]

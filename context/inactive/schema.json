@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Company material flows",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["company_profile", "products_and_services", "waste_products", "by_products"],
+  "properties": {
+    "company_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["company_id", "company_name", "address", "website", "coordinates"],
+      "properties": {
+        "company_id": { "type": "string" },
+        "company_name": { "type": "string" },
+        "address": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["street", "postal_code", "city", "country"],
+          "properties": {
+            "street": { "type": "string" },
+            "postal_code": { "type": "string" },
+            "city": { "type": "string" },
+            "region": { "type": "string" },
+            "country": { "type": "string" }
+          }
+        },
+        "website": { "type": "string", "format": "uri" },
+        "coordinates": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lat", "lon"],
+          "properties": {
+            "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+            "lon": { "type": "number", "minimum": -180, "maximum": 180 }
+          }
+        }
+      }
+    },
+
+    "products_and_services": {
+      "type": "array",
+      "description": "All relevant products and services offered by the company.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["product_id", "name", "category", "volume_estimate"],
+        "properties": {
+          "product_id": { "type": "string" },
+          "name": { "type": "string" },
+          "category": { "type": "string", "enum": ["product", "service"] },
+          "description": { "type": "string" },
+          "volume_estimate": { "type": "string", "enum": ["large", "medium", "low"] }
+        }
+      }
+    },
+
+    "waste_products": {
+      "type": "array",
+      "description": "Waste outputs that require disposal/processing (not intended for sale/use).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "waste_id",
+          "name",
+          "material",
+          "form",
+          "grade_condition",
+          "volume_estimate",
+          "produced_by_products"
+        ],
+        "properties": {
+          "waste_id": { "type": "string" },
+          "name": { "type": "string" },
+
+          "material": {
+            "type": "string",
+            "description": "Layer 1: Material Taxonomy code (e.g., WOOD.waste, MET.steel.scrap, POLY.PE)."
+          },
+          "form": {
+            "type": "string",
+            "description": "Layer 2: Product/Form Taxonomy code (e.g., chip, sheet.offcut, film.roll, powder.fine)."
+          },
+          "grade_condition": {
+            "type": "string",
+            "description": "Layer 3: Specification capturing treatment/grade/condition (e.g., untreated, food-grade, contaminated, 20-50mm size)."
+          },
+
+          "waste_type": { "type": "string" },
+          "notes": { "type": "string" },
+
+          "volume_estimate": { "type": "string", "enum": ["large", "medium", "low"] },
+
+          "produced_by_products": {
+            "type": "array",
+            "description": "References to product_id values whose production creates this waste.",
+            "minItems": 1,
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "by_products": {
+      "type": "array",
+      "description": "Non-primary outputs intended for use, sale, reuse, or recovery.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "by_product_id",
+          "name",
+          "material",
+          "form",
+          "grade_condition",
+          "volume_estimate",
+          "produced_by_products"
+        ],
+        "properties": {
+          "by_product_id": { "type": "string" },
+          "name": { "type": "string" },
+
+          "material": {
+            "type": "string",
+            "description": "Layer 1: Material Taxonomy code (e.g., WOOD.waste, MET.steel.scrap, POLY.PE)."
+          },
+          "form": {
+            "type": "string",
+            "description": "Layer 2: Product/Form Taxonomy code (e.g., chip, sheet.offcut, film.roll, powder.fine)."
+          },
+          "grade_condition": {
+            "type": "string",
+            "description": "Layer 3: Specification capturing treatment/grade/condition (e.g., untreated, food-grade, contaminated, 20-50mm size)."
+          },
+
+          "by_product_type": { "type": "string" },
+          "notes": { "type": "string" },
+
+          "volume_estimate": { "type": "string", "enum": ["large", "medium", "low"] },
+
+          "produced_by_products": {
+            "type": "array",
+            "description": "References to product_id values whose production creates this by-product.",
+            "minItems": 1,
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

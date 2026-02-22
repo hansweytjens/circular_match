@@ -1,0 +1,1526 @@
+# COMPANY_ARCHETYPES.yaml
+# Version: 2.0
+# Purpose: Industry archetype patterns for material flow inference
+
+ARCHETYPES:
+
+  # ══════════════════════════════════════════════════════════════════
+  # METAL SECTOR
+  # ══════════════════════════════════════════════════════════════════
+  METAL:
+    
+    ARCH.metal.fabricator:
+      name: "Metal Fabricator"
+      description: "Cuts, welds, and assembles metal structures and components"
+      nace_codes: ["25.11", "25.12", "25.62"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "MET.steel.virgin"
+          forms: ["sheet.flat", "sheet.coil", "bar.solid", "profile.rolled"]
+          specs: {grade: "virgin", treatment: "untreated"}
+          volume: "HIGH"
+        - material: "CHEM.gas.welding"
+          forms: ["liquid.bulk"]
+          specs: {grade: "technical"}
+          volume: "LOW"
+          
+      typical_outputs:
+        - material: "MET.steel.scrap"
+          forms: ["sheet.offcut", "bar.offcut", "chip"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+        - material: "CHEM.slag"
+          forms: ["granular"]
+          specs: {condition: "production_scrap"}
+          volume: "LOW"
+          output_type: "waste"
+          
+      equipment_indicators:
+        - "plasma cutter" → sheet.offcut
+        - "press brake" → sheet.offcut
+        - "welding" → slag, fume
+        - "shear" → sheet.offcut
+        - "saw" → bar.offcut, dust
+        
+      variations:
+        heavy: "Large structural steel, thicker materials"
+        light: "Sheet metal, thinner gauges"
+        stainless: "Stainless steel specialist"
+        aluminum: "Aluminum specialist"
+
+    ARCH.metal.machinist:
+      name: "Precision Machinist"
+      description: "CNC machining, turning, milling of metal components"
+      nace_codes: ["25.62"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "MET.*.virgin"
+          forms: ["bar.solid", "block", "sheet.plate"]
+          specs: {grade: "virgin", condition: "new"}
+          volume: "HIGH"
+        - material: "CHEM.oil.cutting"
+          forms: ["liquid.bulk", "liquid.drummed"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "MET.*.scrap"
+          forms: ["chip", "turning", "bar.offcut"]
+          specs: {grade: "clean", condition: "production_scrap", contamination: "cutting_fluid"}
+          volume: "MEDIUM-HIGH"
+          output_type: "byproduct"
+        - material: "CHEM.oil.waste"
+          forms: ["liquid.residual"]
+          specs: {grade: "contaminated", contamination: "metal_fines"}
+          volume: "LOW"
+          output_type: "waste"
+          
+      equipment_indicators:
+        - "CNC" → chip, turning
+        - "lathe" → turning
+        - "mill" → chip
+        - "grinder" → powder.fine, dust
+        - "EDM" → sludge
+        
+      variations:
+        aluminum: "Aluminum specialist - higher scrap value"
+        steel: "Steel machining"
+        multi_metal: "Multiple metal types"
+        
+    ARCH.metal.foundry:
+      name: "Metal Foundry"
+      description: "Casting and molding of metals"
+      nace_codes: ["24.51", "24.52", "24.53", "24.54"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "MET.*.scrap"
+          forms: ["chip", "turning", "bar.offcut", "block", "baled"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "HIGH"
+        - material: "MET.*.virgin"
+          forms: ["ingot", "bar.solid"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+        - material: "MIN.sand.foundry"
+          forms: ["aggregate.fine"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "MIN.sand.spent"
+          forms: ["aggregate.fine"]
+          specs: {grade: "contaminated", contamination: "binder_residue"}
+          volume: "HIGH"
+          output_type: "waste"
+        - material: "MIN.slag"
+          forms: ["granular", "block"]
+          specs: {condition: "production_scrap"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+        - material: "MET.*.scrap"
+          forms: ["component.reject", "chip"]
+          specs: {grade: "clean"}
+          volume: "LOW"
+          output_type: "byproduct"
+          
+      equipment_indicators:
+        - "furnace" → slag, emissions
+        - "casting" → sand waste, rejects
+        - "molding" → sand, pattern waste
+
+    ARCH.metal.surface:
+      name: "Surface Treatment Specialist"
+      description: "Coating, plating, galvanizing, anodizing"
+      nace_codes: ["25.61"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "MET.*.virgin"
+          forms: ["component.formed", "sheet.flat", "profile.extruded"]
+          specs: {grade: "virgin", treatment: "untreated"}
+          volume: "HIGH"
+        - material: "CHEM.acid"
+          forms: ["liquid.bulk"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+        - material: "CHEM.coating.*"
+          forms: ["powder.fine", "liquid.bulk"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "CHEM.acid.spent"
+          forms: ["liquid.residual"]
+          specs: {grade: "contaminated", contamination: "metal_ions"}
+          volume: "MEDIUM"
+          output_type: "waste"
+        - material: "CHEM.sludge"
+          forms: ["liquid.residual", "paste"]
+          specs: {grade: "hazardous"}
+          volume: "LOW"
+          output_type: "waste"
+        - material: "WATER.wastewater"
+          forms: ["liquid.bulk"]
+          specs: {contamination: "chemical"}
+          volume: "HIGH"
+          output_type: "waste"
+          
+      equipment_indicators:
+        - "plating line" → metal sludge, acid
+        - "powder coating" → powder overspray
+        - "galvanizing" → zinc dross, flux waste
+
+    ARCH.metal.recycler:
+      name: "Scrap Metal Processor"
+      description: "Collects, sorts, processes scrap metal"
+      nace_codes: ["38.32"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "MET.*.scrap"
+          forms: ["mixed", "sheet.offcut", "bar.offcut", "chip", "turning", "component.reject"]
+          specs: {grade: "mixed", condition: "post_industrial"}
+          volume: "HIGH"
+        - material: "COMP.mixed.metal"
+          forms: ["waste.mixed"]
+          specs: {grade: "mixed"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "MET.ferrous.scrap"
+          forms: ["baled", "shred", "sorted"]
+          specs: {grade: "clean", condition: "processed"}
+          volume: "HIGH"
+          output_type: "product"
+        - material: "MET.nonferrous.scrap"
+          forms: ["baled", "sorted", "granule"]
+          specs: {grade: "clean", condition: "processed"}
+          volume: "MEDIUM"
+          output_type: "product"
+        - material: "COMP.shredder.residue"
+          forms: ["shred", "mixed"]
+          specs: {grade: "contaminated"}
+          volume: "LOW"
+          output_type: "waste"
+
+
+  # ══════════════════════════════════════════════════════════════════
+  # POLYMER/PLASTICS SECTOR
+  # ══════════════════════════════════════════════════════════════════
+  POLYMER:
+  
+    ARCH.poly.injection:
+      name: "Injection Molder"
+      description: "Produces plastic parts via injection molding"
+      nace_codes: ["22.29"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "POLY.*.virgin"
+          forms: ["granule"]
+          specs: {grade: "virgin", condition: "new"}
+          volume: "HIGH"
+        - material: "POLY.*.regrind"
+          forms: ["granule", "flake"]
+          specs: {grade: "recycled", condition: "production_scrap"}
+          volume: "LOW-MEDIUM"
+          
+      typical_outputs:
+        - material: "POLY.*.scrap"
+          forms: ["component.reject", "granule"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "LOW-MEDIUM"
+          output_type: "byproduct"
+        - material: "POLY.*.startup"
+          forms: ["lump", "irregular"]
+          specs: {grade: "mixed", contamination: "color_mixed"}
+          volume: "LOW"
+          output_type: "waste"
+          
+      equipment_indicators:
+        - "injection mold" → sprues, runners, rejects
+        - "granulator" → regrind capability (internal recycling)
+        - "dryer" → minimal waste
+        
+      variations:
+        technical: "Engineering plastics, tight specs"
+        packaging: "High-volume, commodity plastics"
+        automotive: "Automotive-grade, often filled polymers"
+
+    ARCH.poly.extrusion:
+      name: "Plastic Extruder"
+      description: "Produces profiles, pipes, films, sheets via extrusion"
+      nace_codes: ["22.21", "22.23"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "POLY.*.virgin"
+          forms: ["granule"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "POLY.*.scrap"
+          forms: ["film.scrap", "profile.offcut", "sheet.offcut"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+        - material: "POLY.*.startup"
+          forms: ["lump", "strip"]
+          specs: {grade: "mixed"}
+          volume: "LOW"
+          output_type: "waste"
+          
+      equipment_indicators:
+        - "extruder" → startup scrap, edge trim
+        - "blown film" → edge trim, startup
+        - "pipe extrusion" → cutoffs, rejects
+
+    ARCH.poly.thermoform:
+      name: "Thermoformer"
+      description: "Forms plastic sheets into shapes via heat and vacuum"
+      nace_codes: ["22.29"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "POLY.*.virgin"
+          forms: ["sheet.flat", "sheet.coil"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "POLY.*.scrap"
+          forms: ["sheet.offcut", "skeleton"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "HIGH"
+          output_type: "byproduct"
+          
+      notes: "Thermoforming can generate 30-50% skeleton scrap"
+      
+    ARCH.poly.recycler:
+      name: "Plastic Recycler"
+      description: "Processes plastic waste into recyclate"
+      nace_codes: ["38.32"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "POLY.*.scrap"
+          forms: ["baled", "loose", "mixed", "film.scrap", "component.reject"]
+          specs: {grade: "mixed", condition: "post_industrial"}
+          volume: "HIGH"
+        - material: "POLY.*.post_consumer"
+          forms: ["baled", "mixed"]
+          specs: {grade: "contaminated", condition: "post_consumer"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "POLY.*.recyclate"
+          forms: ["granule", "flake"]
+          specs: {grade: "recycled", condition: "processed"}
+          volume: "HIGH"
+          output_type: "product"
+        - material: "COMP.residue"
+          forms: ["waste.mixed"]
+          specs: {grade: "contaminated"}
+          volume: "LOW"
+          output_type: "waste"
+
+
+  # ══════════════════════════════════════════════════════════════════
+  # WOOD SECTOR
+  # ══════════════════════════════════════════════════════════════════
+  WOOD:
+  
+    ARCH.wood.sawmill:
+      name: "Sawmill / Primary Wood Processor"
+      description: "Converts logs into lumber, boards, and wood products"
+      nace_codes: ["16.10"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "WOOD.virgin"
+          forms: ["log", "roundwood"]
+          specs: {grade: "virgin", treatment: "untreated", moisture: "green"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "WOOD.waste"
+          forms: ["chip", "dust", "shred"]
+          specs: {grade: "clean", treatment: "untreated", moisture: "variable"}
+          volume: "HIGH"
+          output_type: "byproduct"
+        - material: "WOOD.waste"
+          forms: ["bark"]
+          specs: {grade: "clean", treatment: "untreated"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+        - material: "WOOD.waste"
+          forms: ["slab", "offcut"]
+          specs: {grade: "clean", treatment: "untreated"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+          
+      notes: "Can generate 40-60% byproduct from log input"
+
+    ARCH.wood.furniture:
+      name: "Furniture Manufacturer"
+      description: "Produces furniture from wood and panel products"
+      nace_codes: ["31.01", "31.02", "31.09"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "WOOD.virgin"
+          forms: ["board.solid", "board.engineered", "board.laminated"]
+          specs: {grade: "virgin", treatment: "variable"}
+          volume: "HIGH"
+        - material: "MET.*.virgin"
+          forms: ["component.formed", "bar.solid"]
+          specs: {grade: "virgin"}
+          volume: "LOW"
+        - material: "POLY.foam.*"
+          forms: ["sheet.flat", "block"]
+          specs: {grade: "virgin"}
+          volume: "LOW-MEDIUM"
+          
+      typical_outputs:
+        - material: "WOOD.waste"
+          forms: ["board.offcut", "chip", "dust"]
+          specs: {grade: "mixed", treatment: "mixed"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+        - material: "POLY.foam.scrap"
+          forms: ["offcut", "shred"]
+          specs: {grade: "clean"}
+          volume: "LOW"
+          output_type: "waste"
+          
+      equipment_indicators:
+        - "CNC router" → chip, dust
+        - "edge bander" → edge trim
+        - "panel saw" → offcuts
+
+    ARCH.wood.construction:
+      name: "Construction Woodwork"
+      description: "Produces wooden construction elements, joinery"
+      nace_codes: ["16.23", "43.32"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "WOOD.virgin"
+          forms: ["board.solid", "board.engineered", "profile.extruded"]
+          specs: {grade: "virgin", treatment: "variable"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "WOOD.waste"
+          forms: ["board.offcut", "chip", "dust"]
+          specs: {grade: "mixed", treatment: "mixed"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+
+    ARCH.wood.pallet:
+      name: "Pallet Producer/Repairer"
+      description: "Manufactures and repairs wooden pallets"
+      nace_codes: ["16.24"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "WOOD.virgin"
+          forms: ["board.solid", "bar.solid"]
+          specs: {grade: "secondary", treatment: "variable"}
+          volume: "HIGH"
+        - material: "WOOD.waste"
+          forms: ["pallet.damaged"]
+          specs: {grade: "mixed", condition: "damaged"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "WOOD.waste"
+          forms: ["board.offcut", "chip"]
+          specs: {grade: "mixed", treatment: "mixed"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+        - material: "MET.ferrous.scrap"
+          forms: ["nail", "staple"]
+          specs: {grade: "contaminated"}
+          volume: "LOW"
+          output_type: "waste"
+
+
+  # ══════════════════════════════════════════════════════════════════
+  # FOOD & BEVERAGE SECTOR
+  # ══════════════════════════════════════════════════════════════════
+  FOOD:
+  
+    ARCH.food.processor:
+      name: "Food Processor"
+      description: "Processes raw food ingredients into products"
+      nace_codes: ["10.1*", "10.2*", "10.3*", "10.8*"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "FOOD.raw"
+          forms: ["organic.whole", "organic.bulk", "liquid.bulk"]
+          specs: {grade: "food_grade"}
+          volume: "HIGH"
+        - material: "PAPER.cardboard"
+          forms: ["packaging.secondary"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "FOOD.waste"
+          forms: ["organic.residue", "organic.spoiled"]
+          specs: {grade: "organic", contamination: "none"}
+          volume: "MEDIUM-HIGH"
+          output_type: "byproduct"
+        - material: "PAPER.cardboard"
+          forms: ["packaging.used"]
+          specs: {grade: "clean", condition: "post_industrial"}
+          volume: "MEDIUM"
+          output_type: "waste"
+        - material: "POLY.film.scrap"
+          forms: ["film.scrap"]
+          specs: {grade: "contaminated", contamination: "food"}
+          volume: "LOW"
+          output_type: "waste"
+          
+      variations:
+        fruit_veg: "High organic residue (peels, pulp)"
+        dairy: "Whey, wash water"
+        grain: "Husks, bran, dust"
+
+    ARCH.food.beverage:
+      name: "Beverage Producer"
+      description: "Produces drinks and beverages"
+      nace_codes: ["11.0*"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "FOOD.raw"
+          forms: ["organic.processed", "liquid.bulk"]
+          specs: {grade: "food_grade"}
+          volume: "HIGH"
+        - material: "MIN.glass.container"
+          forms: ["packaging.primary"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "WATER.process"
+          forms: ["liquid.bulk"]
+          specs: {grade: "potable"}
+          volume: "VERY_HIGH"
+          
+      typical_outputs:
+        - material: "FOOD.waste"
+          forms: ["organic.residue"]
+          specs: {grade: "organic"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+        - material: "MIN.glass.cullet"
+          forms: ["waste.source_separated"]
+          specs: {grade: "clean"}
+          volume: "LOW"
+          output_type: "waste"
+        - material: "WATER.wastewater"
+          forms: ["liquid.bulk"]
+          specs: {contamination: "organic"}
+          volume: "HIGH"
+          output_type: "waste"
+
+    ARCH.food.bakery:
+      name: "Bakery"
+      description: "Produces bread and baked goods"
+      nace_codes: ["10.71"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "FOOD.raw"
+          forms: ["powder.fine", "liquid.bulk"]
+          specs: {grade: "food_grade"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "FOOD.waste"
+          forms: ["organic.spoiled", "organic.residue"]
+          specs: {grade: "organic"}
+          volume: "LOW-MEDIUM"
+          output_type: "waste"
+        - material: "PAPER.cardboard"
+          forms: ["packaging.used"]
+          specs: {grade: "clean"}
+          volume: "MEDIUM"
+          output_type: "waste"
+
+
+  # ══════════════════════════════════════════════════════════════════
+  # CONSTRUCTION SECTOR (NEW)
+  # ══════════════════════════════════════════════════════════════════
+  CONSTRUCTION:
+  
+    ARCH.const.general:
+      name: "General Contractor"
+      description: "Construction and building contractor"
+      nace_codes: ["41.20", "42.*", "43.*"]
+      persona: "GENERATOR"
+      
+      typical_inputs:
+        - material: "MIN.concrete.*"
+          forms: ["product.new", "aggregate.mixed"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "WOOD.*"
+          forms: ["board.solid", "board.engineered", "profile.*"]
+          specs: {grade: "virgin", treatment: "variable"}
+          volume: "HIGH"
+        - material: "MET.steel.*"
+          forms: ["bar.solid", "profile.rolled", "sheet.flat"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "COMP.cdw.mixed"
+          forms: ["waste.mixed", "waste.containerized"]
+          specs: {grade: "mixed", condition: "post_industrial"}
+          volume: "HIGH"
+          output_type: "waste"
+        - material: "WOOD.waste"
+          forms: ["board.offcut", "waste.mixed"]
+          specs: {grade: "mixed", treatment: "mixed"}
+          volume: "MEDIUM"
+          output_type: "waste"
+        - material: "MIN.concrete.waste"
+          forms: ["aggregate.mixed", "block"]
+          specs: {grade: "contaminated"}
+          volume: "MEDIUM"
+          output_type: "waste"
+          
+      variations:
+        residential: "Housing construction"
+        commercial: "Commercial/industrial buildings"
+        infrastructure: "Roads, bridges, utilities"
+
+    ARCH.const.demolition:
+      name: "Demolition Contractor"
+      description: "Building demolition and deconstruction"
+      nace_codes: ["43.11"]
+      persona: "GENERATOR"
+      
+      typical_inputs:
+        - material: "COMP.cdw.building"
+          forms: ["assembly.complete"]
+          specs: {grade: "mixed", condition: "eol"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "MIN.concrete.waste"
+          forms: ["aggregate.mixed", "block"]
+          specs: {grade: "mixed", contamination: "rebar"}
+          volume: "VERY_HIGH"
+          output_type: "product"
+        - material: "MET.steel.scrap"
+          forms: ["bar.offcut", "profile.offcut", "mixed"]
+          specs: {grade: "mixed", condition: "post_consumer"}
+          volume: "HIGH"
+          output_type: "product"
+        - material: "WOOD.waste"
+          forms: ["board.offcut", "mixed"]
+          specs: {grade: "mixed", treatment: "mixed"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+        - material: "COMP.cdw.mixed"
+          forms: ["waste.mixed"]
+          specs: {grade: "contaminated"}
+          volume: "MEDIUM"
+          output_type: "waste"
+
+    ARCH.const.concrete:
+      name: "Concrete Producer"
+      description: "Ready-mix concrete and precast production"
+      nace_codes: ["23.61", "23.63"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "MIN.cement"
+          forms: ["powder.fine"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "MIN.aggregates"
+          forms: ["aggregate.coarse", "aggregate.fine"]
+          specs: {grade: "virgin"}
+          volume: "VERY_HIGH"
+        - material: "WATER.process"
+          forms: ["liquid.bulk"]
+          specs: {grade: "clean"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "MIN.concrete.waste"
+          forms: ["liquid.residual", "aggregate.mixed"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "LOW-MEDIUM"
+          output_type: "waste"
+        - material: "WATER.wastewater"
+          forms: ["liquid.bulk"]
+          specs: {contamination: "cement"}
+          volume: "MEDIUM"
+          output_type: "waste"
+
+    ARCH.const.insulation:
+      name: "Insulation Installer"
+      description: "Installs building insulation"
+      nace_codes: ["43.29"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "MIN.insulation.*"
+          forms: ["board.rigid", "board.flexible", "loose.bulk"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "MIN.insulation.waste"
+          forms: ["board.offcut", "loose.bulk"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "MEDIUM"
+          output_type: "waste"
+
+    ARCH.const.glass:
+      name: "Glass/Window Installer"
+      description: "Glass cutting and window installation"
+      nace_codes: ["23.12", "43.34"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "MIN.glass.flat"
+          forms: ["sheet.flat"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "MET.aluminum.*"
+          forms: ["profile.extruded"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "MIN.glass.cullet"
+          forms: ["sheet.offcut", "waste.source_separated"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+        - material: "MET.aluminum.scrap"
+          forms: ["profile.offcut"]
+          specs: {grade: "clean"}
+          volume: "LOW"
+          output_type: "byproduct"
+
+
+  # ══════════════════════════════════════════════════════════════════
+  # TEXTILES SECTOR (NEW)
+  # ══════════════════════════════════════════════════════════════════
+  TEXTILES:
+  
+    ARCH.text.manufacturer:
+      name: "Textile Manufacturer"
+      description: "Produces fabrics and textiles"
+      nace_codes: ["13.1*", "13.2*", "13.9*"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "TEXT.natural"
+          forms: ["fiber.loose", "fiber.baled"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "TEXT.synthetic"
+          forms: ["fiber.loose", "granule"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "TEXT.waste"
+          forms: ["fiber.loose", "shred", "offcut"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+        - material: "WATER.wastewater"
+          forms: ["liquid.bulk"]
+          specs: {contamination: "dye"}
+          volume: "HIGH"
+          output_type: "waste"
+
+    ARCH.text.clothing:
+      name: "Clothing Manufacturer"
+      description: "Produces garments and apparel"
+      nace_codes: ["14.1*", "14.2*", "14.3*"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "TEXT.*"
+          forms: ["sheet.flat", "sheet.coil"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "TEXT.waste"
+          forms: ["sheet.offcut", "shred"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "MEDIUM-HIGH"
+          output_type: "byproduct"
+          
+      notes: "Cutting patterns can generate 15-25% fabric waste"
+
+    ARCH.text.industrial:
+      name: "Industrial Textiles Producer"
+      description: "Produces technical textiles, filters, geotextiles"
+      nace_codes: ["13.92", "13.96"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "TEXT.synthetic"
+          forms: ["fiber.loose", "sheet.flat"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "TEXT.waste"
+          forms: ["sheet.offcut", "fiber.loose"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+
+    ARCH.text.laundry:
+      name: "Industrial Laundry"
+      description: "Commercial laundry services"
+      nace_codes: ["96.01"]
+      persona: "ENABLER"
+      
+      typical_inputs:
+        - material: "TEXT.*"
+          forms: ["product.eol"]
+          specs: {grade: "contaminated", condition: "post_consumer"}
+          volume: "HIGH"
+        - material: "CHEM.detergent"
+          forms: ["liquid.bulk", "powder.fine"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+        - material: "WATER.process"
+          forms: ["liquid.bulk"]
+          specs: {grade: "clean"}
+          volume: "VERY_HIGH"
+          
+      typical_outputs:
+        - material: "TEXT.waste"
+          forms: ["waste.mixed"]
+          specs: {grade: "contaminated", condition: "post_consumer"}
+          volume: "LOW"
+          output_type: "waste"
+        - material: "WATER.wastewater"
+          forms: ["liquid.bulk"]
+          specs: {contamination: "detergent"}
+          volume: "VERY_HIGH"
+          output_type: "waste"
+        - material: "COMP.lint"
+          forms: ["fiber.loose"]
+          specs: {grade: "mixed"}
+          volume: "LOW"
+          output_type: "waste"
+
+
+  # ══════════════════════════════════════════════════════════════════
+  # PAPER & PRINTING SECTOR (NEW)
+  # ══════════════════════════════════════════════════════════════════
+  PAPER:
+  
+    ARCH.paper.printer:
+      name: "Commercial Printer"
+      description: "Printing services"
+      nace_codes: ["18.1*"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "PAPER.virgin"
+          forms: ["sheet.flat", "sheet.coil"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "CHEM.paint.liquid"
+          forms: ["liquid.drummed"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "PAPER.mixed"
+          forms: ["sheet.offcut", "waste.source_separated"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+        - material: "PAPER.contaminated"
+          forms: ["waste.mixed"]
+          specs: {grade: "contaminated", contamination: "ink"}
+          volume: "LOW"
+          output_type: "waste"
+        - material: "CHEM.paint.waste"
+          forms: ["liquid.residual"]
+          specs: {grade: "contaminated"}
+          volume: "LOW"
+          output_type: "waste"
+
+    ARCH.paper.converter:
+      name: "Paper Converter"
+      description: "Converts paper/board into products"
+      nace_codes: ["17.2*"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "PAPER.*"
+          forms: ["sheet.flat", "sheet.coil"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "PAPER.*"
+          forms: ["sheet.offcut", "shred"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "MEDIUM-HIGH"
+          output_type: "byproduct"
+
+    ARCH.paper.packaging:
+      name: "Packaging Manufacturer"
+      description: "Produces cardboard boxes and packaging"
+      nace_codes: ["17.21"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "PAPER.cardboard"
+          forms: ["sheet.flat", "sheet.coil"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "PAPER.cardboard"
+          forms: ["sheet.offcut", "waste.source_separated"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+
+
+  # ══════════════════════════════════════════════════════════════════
+  # CHEMICAL SECTOR
+  # ══════════════════════════════════════════════════════════════════
+  CHEMICAL:
+  
+    ARCH.chem.formulator:
+      name: "Chemical Formulator"
+      description: "Mixes and formulates chemical products"
+      nace_codes: ["20.1*", "20.4*"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "CHEM.*"
+          forms: ["liquid.bulk", "powder.fine", "granule"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "CHEM.waste"
+          forms: ["liquid.residual"]
+          specs: {grade: "contaminated"}
+          volume: "LOW"
+          output_type: "waste"
+        - material: "COMP.packaging.contaminated"
+          forms: ["packaging.used"]
+          specs: {grade: "contaminated", contamination: "chemical"}
+          volume: "MEDIUM"
+          output_type: "waste"
+
+    ARCH.chem.coatings:
+      name: "Coatings Manufacturer"
+      description: "Produces paints and coatings"
+      nace_codes: ["20.30"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "CHEM.resin"
+          forms: ["liquid.bulk"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "CHEM.pigment"
+          forms: ["powder.fine"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+        - material: "CHEM.solvent.*"
+          forms: ["liquid.bulk"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "CHEM.coating.waste"
+          forms: ["liquid.residual", "paste"]
+          specs: {grade: "contaminated"}
+          volume: "LOW"
+          output_type: "waste"
+        - material: "CHEM.solvent.waste"
+          forms: ["liquid.residual"]
+          specs: {grade: "contaminated"}
+          volume: "LOW"
+          output_type: "waste"
+
+    ARCH.chem.adhesives:
+      name: "Adhesives Manufacturer"
+      description: "Produces adhesives and sealants"
+      nace_codes: ["20.52"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "CHEM.resin"
+          forms: ["liquid.bulk"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "CHEM.adhesive.waste"
+          forms: ["liquid.residual", "paste"]
+          specs: {grade: "contaminated"}
+          volume: "LOW"
+          output_type: "waste"
+
+
+  # ══════════════════════════════════════════════════════════════════
+  # ELECTRONICS SECTOR (NEW)
+  # ══════════════════════════════════════════════════════════════════
+  ELECTRONICS:
+  
+    ARCH.elec.assembly:
+      name: "Electronics Assembly"
+      description: "Assembles electronic products"
+      nace_codes: ["26.*", "27.*"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "COMP.weee.pcb"
+          forms: ["component.precision"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "POLY.*"
+          forms: ["component.formed"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+        - material: "MET.*"
+          forms: ["component.precision"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "COMP.weee.mixed"
+          forms: ["component.reject", "waste.mixed"]
+          specs: {grade: "mixed"}
+          volume: "LOW"
+          output_type: "waste"
+        - material: "PAPER.cardboard"
+          forms: ["packaging.used"]
+          specs: {grade: "clean"}
+          volume: "MEDIUM"
+          output_type: "waste"
+        - material: "POLY.film.scrap"
+          forms: ["film.scrap", "packaging.used"]
+          specs: {grade: "clean"}
+          volume: "LOW"
+          output_type: "waste"
+
+    ARCH.elec.cable:
+      name: "Cable/Wire Manufacturer"
+      description: "Produces cables and wiring"
+      nace_codes: ["27.32"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "MET.copper.virgin"
+          forms: ["bar.solid", "wire"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "POLY.*.virgin"
+          forms: ["granule"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "MET.copper.scrap"
+          forms: ["wire", "offcut"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "LOW-MEDIUM"
+          output_type: "byproduct"
+        - material: "POLY.*.scrap"
+          forms: ["granule", "lump"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "LOW"
+          output_type: "byproduct"
+
+
+  # ══════════════════════════════════════════════════════════════════
+  # LOGISTICS & DISTRIBUTION SECTOR
+  # ══════════════════════════════════════════════════════════════════
+  LOGISTICS:
+  
+    ARCH.log.warehouse:
+      name: "Warehouse/Distribution Center"
+      description: "Storage and distribution of goods"
+      nace_codes: ["52.10", "52.24"]
+      persona: "GENERATOR"
+      
+      typical_inputs:
+        - material: "PAPER.cardboard"
+          forms: ["packaging.secondary", "packaging.tertiary"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "POLY.film.*"
+          forms: ["packaging.tertiary"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+        - material: "WOOD.pallet"
+          forms: ["packaging.tertiary"]
+          specs: {grade: "mixed"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "PAPER.cardboard"
+          forms: ["packaging.used", "waste.baled"]
+          specs: {grade: "clean", condition: "post_industrial"}
+          volume: "HIGH"
+          output_type: "waste"
+        - material: "POLY.film.*"
+          forms: ["film.scrap", "waste.baled"]
+          specs: {grade: "mixed", condition: "post_industrial"}
+          volume: "MEDIUM"
+          output_type: "waste"
+        - material: "WOOD.pallet"
+          forms: ["packaging.damaged", "packaging.used"]
+          specs: {grade: "mixed", condition: "damaged"}
+          volume: "MEDIUM"
+          output_type: "waste"
+
+    ARCH.log.transport:
+      name: "Transport Company"
+      description: "Freight and logistics transport"
+      nace_codes: ["49.41", "49.42"]
+      persona: "ENABLER"
+      
+      typical_inputs:
+        - material: "CHEM.fuel.*"
+          forms: ["liquid.bulk"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "CHEM.oil.lubricant"
+          forms: ["liquid.drummed"]
+          specs: {grade: "virgin"}
+          volume: "LOW"
+          
+      typical_outputs:
+        - material: "CHEM.oil.waste"
+          forms: ["liquid.residual"]
+          specs: {grade: "contaminated"}
+          volume: "LOW"
+          output_type: "waste"
+        - material: "POLY.rubber.waste"
+          forms: ["product.eol"]
+          specs: {grade: "worn", condition: "post_consumer"}
+          volume: "LOW"
+          output_type: "waste"
+
+    ARCH.log.packaging:
+      name: "Packaging Services"
+      description: "Packaging and fulfillment services"
+      nace_codes: ["82.92"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "PAPER.cardboard"
+          forms: ["sheet.flat", "packaging.secondary"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "POLY.film.*"
+          forms: ["film.roll"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "PAPER.cardboard"
+          forms: ["sheet.offcut"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+        - material: "POLY.film.*"
+          forms: ["film.scrap"]
+          specs: {grade: "clean", condition: "production_scrap"}
+          volume: "LOW"
+          output_type: "byproduct"
+
+
+  # ══════════════════════════════════════════════════════════════════
+  # WASTE & RECYCLING SECTOR
+  # ══════════════════════════════════════════════════════════════════
+  WASTE:
+  
+    ARCH.waste.collector:
+      name: "Waste Collector"
+      description: "Collects and transports waste"
+      nace_codes: ["38.11", "38.12"]
+      persona: "ENABLER"
+      
+      typical_inputs:
+        - material: "COMP.waste.mixed"
+          forms: ["waste.containerized", "waste.mixed"]
+          specs: {grade: "mixed"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "COMP.waste.mixed"
+          forms: ["waste.containerized"]
+          specs: {grade: "mixed"}
+          volume: "HIGH"
+          output_type: "service_output"
+
+    ARCH.waste.sorter:
+      name: "Waste Sorting Facility"
+      description: "Sorts mixed waste into fractions"
+      nace_codes: ["38.21"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "COMP.waste.mixed"
+          forms: ["waste.mixed", "waste.baled"]
+          specs: {grade: "mixed"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "PAPER.cardboard"
+          forms: ["waste.baled"]
+          specs: {grade: "mixed", condition: "post_consumer"}
+          volume: "MEDIUM"
+          output_type: "product"
+        - material: "POLY.*.scrap"
+          forms: ["waste.baled"]
+          specs: {grade: "mixed", condition: "post_consumer"}
+          volume: "MEDIUM"
+          output_type: "product"
+        - material: "MET.*.scrap"
+          forms: ["sorted"]
+          specs: {grade: "mixed", condition: "post_consumer"}
+          volume: "LOW"
+          output_type: "product"
+        - material: "COMP.residue"
+          forms: ["waste.mixed"]
+          specs: {grade: "contaminated"}
+          volume: "MEDIUM"
+          output_type: "waste"
+
+    ARCH.waste.processor:
+      name: "Recycling Processor"
+      description: "Processes recyclables into secondary materials"
+      nace_codes: ["38.32"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "*.scrap"
+          forms: ["waste.baled", "sorted", "mixed"]
+          specs: {grade: "mixed", condition: "post_industrial"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "*.recyclate"
+          forms: ["granule", "flake", "baled"]
+          specs: {grade: "recycled"}
+          volume: "HIGH"
+          output_type: "product"
+        - material: "COMP.residue"
+          forms: ["waste.mixed"]
+          specs: {grade: "contaminated"}
+          volume: "LOW"
+          output_type: "waste"
+
+    ARCH.waste.organic:
+      name: "Organic Waste Processor"
+      description: "Composting or anaerobic digestion"
+      nace_codes: ["38.21"]
+      persona: "TRANSFORMER"
+      
+      typical_inputs:
+        - material: "FOOD.waste"
+          forms: ["organic.residue", "organic.spoiled"]
+          specs: {grade: "organic"}
+          volume: "HIGH"
+        - material: "AGRI.residues"
+          forms: ["organic.residue"]
+          specs: {grade: "clean"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "MIN.compost"
+          forms: ["aggregate.fine"]
+          specs: {grade: "processed"}
+          volume: "MEDIUM"
+          output_type: "product"
+        - material: "GAS.biogas"
+          forms: ["gas"]
+          specs: {grade: "processed"}
+          volume: "MEDIUM"
+          output_type: "product"
+
+
+  # ══════════════════════════════════════════════════════════════════
+  # AGRICULTURE SECTOR (NEW)
+  # ══════════════════════════════════════════════════════════════════
+  AGRICULTURE:
+  
+    ARCH.agri.farm:
+      name: "Farm / Agricultural Producer"
+      description: "Produces crops and agricultural products"
+      nace_codes: ["01.1*", "01.2*", "01.3*", "01.4*"]
+      persona: "GENERATOR"
+      
+      typical_inputs:
+        - material: "CHEM.fertilizer"
+          forms: ["granule", "liquid.bulk"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "POLY.film.*"
+          forms: ["film.roll"]
+          specs: {grade: "virgin"}
+          volume: "LOW-MEDIUM"
+          
+      typical_outputs:
+        - material: "AGRI.residues"
+          forms: ["organic.residue", "fiber.loose"]
+          specs: {grade: "clean"}
+          volume: "HIGH"
+          output_type: "byproduct"
+        - material: "POLY.film.waste"
+          forms: ["film.scrap"]
+          specs: {grade: "contaminated", contamination: "soil"}
+          volume: "LOW"
+          output_type: "waste"
+        - material: "AGRI.animal"
+          forms: ["organic.residue"]
+          specs: {grade: "organic"}
+          volume: "variable"
+          output_type: "byproduct"
+
+    ARCH.agri.greenhouse:
+      name: "Greenhouse / Horticulture"
+      description: "Protected cultivation"
+      nace_codes: ["01.13", "01.19"]
+      persona: "GENERATOR"
+      
+      typical_inputs:
+        - material: "MIN.substrate"
+          forms: ["aggregate.fine", "granule"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+        - material: "POLY.film.*"
+          forms: ["film.roll", "sheet.flat"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "AGRI.residues"
+          forms: ["organic.residue"]
+          specs: {grade: "clean"}
+          volume: "MEDIUM"
+          output_type: "byproduct"
+        - material: "MIN.substrate.spent"
+          forms: ["aggregate.fine"]
+          specs: {grade: "contaminated"}
+          volume: "MEDIUM"
+          output_type: "waste"
+        - material: "POLY.film.waste"
+          forms: ["film.scrap"]
+          specs: {grade: "degraded"}
+          volume: "LOW"
+          output_type: "waste"
+
+
+  # ══════════════════════════════════════════════════════════════════
+  # SERVICES WITH MATERIAL FLOWS (NEW)
+  # ══════════════════════════════════════════════════════════════════
+  SERVICES:
+  
+    ARCH.serv.automotive:
+      name: "Automotive Repair/Service"
+      description: "Vehicle maintenance and repair"
+      nace_codes: ["45.20"]
+      persona: "GENERATOR"
+      
+      typical_inputs:
+        - material: "CHEM.oil.lubricant"
+          forms: ["liquid.drummed"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+        - material: "MET.*.virgin"
+          forms: ["component.precision"]
+          specs: {grade: "virgin"}
+          volume: "LOW"
+          
+      typical_outputs:
+        - material: "CHEM.oil.waste"
+          forms: ["liquid.residual"]
+          specs: {grade: "contaminated"}
+          volume: "MEDIUM"
+          output_type: "waste"
+        - material: "MET.*.scrap"
+          forms: ["component.reject"]
+          specs: {grade: "mixed", condition: "post_consumer"}
+          volume: "LOW"
+          output_type: "waste"
+        - material: "POLY.rubber.waste"
+          forms: ["product.eol"]
+          specs: {condition: "post_consumer"}
+          volume: "MEDIUM"
+          output_type: "waste"
+        - material: "COMP.weee.batteries"
+          forms: ["product.eol"]
+          specs: {grade: "hazardous"}
+          volume: "LOW"
+          output_type: "waste"
+
+    ARCH.serv.equipment_rental:
+      name: "Equipment Rental"
+      description: "Rental of machinery and equipment"
+      nace_codes: ["77.3*"]
+      persona: "ENABLER"
+      
+      typical_inputs:
+        - material: "CHEM.oil.*"
+          forms: ["liquid.drummed"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+          
+      typical_outputs:
+        - material: "CHEM.oil.waste"
+          forms: ["liquid.residual"]
+          specs: {grade: "contaminated"}
+          volume: "LOW"
+          output_type: "waste"
+        - material: "MET.*.scrap"
+          forms: ["component.reject"]
+          specs: {condition: "post_consumer"}
+          volume: "LOW"
+          output_type: "waste"
+
+    ARCH.serv.cleaning:
+      name: "Industrial Cleaning Services"
+      description: "Cleaning of industrial facilities"
+      nace_codes: ["81.22"]
+      persona: "ENABLER"
+      
+      typical_inputs:
+        - material: "CHEM.detergent"
+          forms: ["liquid.bulk", "liquid.drummed"]
+          specs: {grade: "virgin"}
+          volume: "MEDIUM"
+        - material: "WATER.process"
+          forms: ["liquid.bulk"]
+          specs: {grade: "clean"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "WATER.wastewater"
+          forms: ["liquid.bulk"]
+          specs: {contamination: "chemical"}
+          volume: "HIGH"
+          output_type: "waste"
+        - material: "COMP.waste.mixed"
+          forms: ["waste.containerized"]
+          specs: {grade: "contaminated"}
+          volume: "LOW"
+          output_type: "waste"
+
+
+  # ══════════════════════════════════════════════════════════════════
+  # WHOLESALE & DISTRIBUTION (NEW)
+  # ══════════════════════════════════════════════════════════════════
+  WHOLESALE:
+  
+    ARCH.whole.building_materials:
+      name: "Building Materials Distributor"
+      description: "Wholesale of construction materials"
+      nace_codes: ["46.73"]
+      persona: "GENERATOR"
+      
+      typical_inputs:
+        - material: "MIN.*"
+          forms: ["product.new", "packaging.secondary"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+        - material: "WOOD.*"
+          forms: ["product.new", "packaging.secondary"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "PAPER.cardboard"
+          forms: ["packaging.used"]
+          specs: {grade: "clean", condition: "post_industrial"}
+          volume: "MEDIUM"
+          output_type: "waste"
+        - material: "POLY.film.*"
+          forms: ["packaging.used"]
+          specs: {grade: "clean"}
+          volume: "LOW"
+          output_type: "waste"
+        - material: "WOOD.pallet"
+          forms: ["packaging.damaged"]
+          specs: {condition: "damaged"}
+          volume: "MEDIUM"
+          output_type: "waste"
+
+    ARCH.whole.industrial:
+      name: "Industrial Supplies Distributor"
+      description: "Wholesale of industrial equipment and supplies"
+      nace_codes: ["46.6*"]
+      persona: "GENERATOR"
+      
+      typical_inputs:
+        - material: "PAPER.cardboard"
+          forms: ["packaging.secondary"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "PAPER.cardboard"
+          forms: ["packaging.used"]
+          specs: {grade: "clean", condition: "post_industrial"}
+          volume: "HIGH"
+          output_type: "waste"
+        - material: "POLY.film.*"
+          forms: ["packaging.used"]
+          specs: {grade: "clean"}
+          volume: "MEDIUM"
+          output_type: "waste"
+
+    ARCH.whole.food:
+      name: "Food Distributor"
+      description: "Wholesale of food products"
+      nace_codes: ["46.3*"]
+      persona: "GENERATOR"
+      
+      typical_inputs:
+        - material: "FOOD.*"
+          forms: ["product.new"]
+          specs: {grade: "food_grade"}
+          volume: "HIGH"
+        - material: "PAPER.cardboard"
+          forms: ["packaging.secondary"]
+          specs: {grade: "virgin"}
+          volume: "HIGH"
+          
+      typical_outputs:
+        - material: "FOOD.waste"
+          forms: ["organic.spoiled"]
+          specs: {grade: "organic", condition: "expired"}
+          volume: "LOW-MEDIUM"
+          output_type: "waste"
+        - material: "PAPER.cardboard"
+          forms: ["packaging.used"]
+          specs: {grade: "mixed", contamination: "food"}
+          volume: "HIGH"
+          output_type: "waste"
