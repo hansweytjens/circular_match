@@ -7,7 +7,23 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 
-DEFAULT_MODEL = "gemini-2.5-flash"
+DEFAULT_MODEL = "gemini-3-flash-preview"
+DEFAULT_API_VERSION = "v1beta"
+MODEL_ALIASES = {
+    "gemini-3-flash": "gemini-3-flash-preview",
+    "gemini-3-pro": "gemini-3-pro-preview",
+    "gemini-3.1-pro": "gemini-3.1-pro-preview",
+    "gemini-3-pro-image": "gemini-3-pro-image-preview",
+}
+PREFERRED_MODELS = [
+    "gemini-3-flash-preview",
+    "gemini-3-pro-preview",
+    "gemini-3.1-pro-preview",
+    "gemini-3-pro-image-preview",
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-lite",
+    "gemini-1.5-flash",
+]
 DEFAULT_CONTEXT_DIR = Path("/workspace/context/active")
 DEFAULT_OUTPUT_DIR = Path("/workspace/output")
 
@@ -185,6 +201,68 @@ def call_gemini(client: Any, model: str, prompt: str, schema: Any) -> str:
     return str(response)
 
 
+def normalize_model_name(name: str) -> str:
+    base = name.removeprefix("models/")
+    return MODEL_ALIASES.get(base, base)
+
+
+def model_supports_generation(model_obj: Any) -> bool:
+    keys = (
+        "supported_actions",
+        "supported_generation_methods",
+        "supported_methods",
+    )
+    for key in keys:
+        methods = getattr(model_obj, key, None)
+        if not methods:
+            continue
+        joined = " ".join(str(m).lower() for m in methods)
+        if "generatecontent" in joined or "generate_content" in joined:
+            return True
+    return False
+
+
+def list_generate_models(client: Any) -> List[str]:
+    names: List[str] = []
+    try:
+        models_iter = client.models.list()
+    except Exception:
+        return names
+
+    for model_obj in models_iter:
+        name = getattr(model_obj, "name", None)
+        if not name:
+            continue
+        if model_supports_generation(model_obj):
+            names.append(normalize_model_name(name))
+            continue
+        # Some SDK/API combinations don't expose capability metadata reliably.
+        names.append(normalize_model_name(name))
+    return sorted(set(names))
+
+
+def resolve_model_name(client: Any, requested_model: str) -> str:
+    requested = normalize_model_name(requested_model)
+    available_models = list_generate_models(client)
+    if not available_models:
+        return requested
+    if requested in available_models:
+        return requested
+    for candidate in PREFERRED_MODELS:
+        if candidate in available_models:
+            print(
+                f"Requested model '{requested_model}' is unavailable. "
+                f"Using '{candidate}' instead."
+            )
+            return candidate
+    fallback = available_models[0]
+    print(
+        f"Requested model '{requested_model}' is unavailable. "
+        f"Using '{fallback}' from listed available models."
+    )
+    return fallback
+
+
 def parse_json_response(response_text: str) -> Any | None:
     text = response_text.strip()
     if text.startswith("```"):
@@ -227,6 +305,7 @@ def normalize_produced_by_products(payload: Any) -> Any:
 def run_pipeline(
     context_dir: Path,
     model: str,
+    api_version: str,
     n: int,
     output_dir: Path,
     dry_run: bool,
@@ -257,6 +336,7 @@ def run_pipeline(
 
     api_key = load_api_key()
     client = None
+    effective_model = model
     if not dry_run:
         try:
             from google import genai
@@ -264,7 +344,14 @@ def run_pipeline(
             raise RuntimeError(
                 "Missing dependency 'google-genai'. Run: pip install -r requirements.txt"
             ) from exc
-        client = genai.Client(api_key=api_key)
+        try:
+            client = genai.Client(
+                api_key=api_key,
+                http_options={"api_version": api_version},
+            )
+        except TypeError:
+            client = genai.Client(api_key=api_key)
+        effective_model = resolve_model_name(client, model)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -281,7 +368,7 @@ def run_pipeline(
             else:
                 response_text = call_gemini(
                     client=client,
-                    model=model,
+                    model=effective_model,
                     prompt=prompt,
                     schema=schema,
                 )
@@ -292,7 +379,7 @@ def run_pipeline(
             record = {
                 "index": idx,
                 "company": company,
-                "model": model,
+                "model": effective_model,
                 "response": response_text,
             }
             if response_json is not None:
@@ -336,6 +423,11 @@ def parse_args() -> argparse.Namespace:
         help=f"Gemini model name (default: {DEFAULT_MODEL})",
     )
     parser.add_argument(
+        "--api-version",
+        default=DEFAULT_API_VERSION,
+        help=f"Gemini API version for SDK calls (default: {DEFAULT_API_VERSION})",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=DEFAULT_OUTPUT_DIR,
@@ -364,6 +456,7 @@ def main() -> None:
     output_path = run_pipeline(
         context_dir=args.context_dir,
         model=args.model,
+        api_version=args.api_version,
         n=args.n,
         output_dir=args.output_dir,
         dry_run=args.dry_run,
