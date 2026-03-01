@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import csv
 import json
@@ -5,6 +7,8 @@ import os
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
+
+from output_paths import GEMINI_PROFILES_DIR
 
 
 DEFAULT_MODEL = "gemini-3-flash-preview"
@@ -25,7 +29,7 @@ PREFERRED_MODELS = [
     "gemini-1.5-flash",
 ]
 DEFAULT_CONTEXT_DIR = Path("/workspace/context/active")
-DEFAULT_OUTPUT_DIR = Path("/workspace/output")
+DEFAULT_OUTPUT_DIR = GEMINI_PROFILES_DIR
 
 
 def load_dotenv_file(dotenv_path: Path = Path(".env")) -> None:
@@ -363,55 +367,44 @@ def run_pipeline(
 
     output_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_path = output_dir / f"gemini_profiles_n{n}_{timestamp}.jsonl"
-    pretty_dir = output_dir / f"gemini_profiles_n{n}_{timestamp}_pretty"
-    pretty_dir.mkdir(parents=True, exist_ok=True)
+    run_dir = output_dir / f"gemini_profiles_n{n}_{timestamp}"
+    wrote_output = False
 
-    with output_path.open("w", encoding="utf-8") as out:
-        for idx, company in enumerate(companies, start=1):
-            prompt = build_prompt(company, context_files, context_dir=context_dir)
-            #print(prompt)
-            if dry_run:
-                response_text = "DRY_RUN: Gemini call skipped."
-            else:
-                response_text = call_gemini(
-                    client=client,
-                    model=effective_model,
-                    prompt=prompt,
-                    schema=schema,
-                )
-            response_json = parse_json_response(response_text)
-            if response_json is not None:
-                response_json = normalize_produced_by_products(response_json)
-
-            record = {
-                "index": idx,
-                "company": company,
-                "model": effective_model,
-                "response": response_text,
-            }
-            if response_json is not None:
-                record["response_json"] = response_json
-            if dry_run:
-                record["prompt"] = prompt
-            out.write(json.dumps(record, ensure_ascii=False) + "\n")
-
-            if response_json is not None:
-                company_name = company.get("Company Name", f"company_{idx}").strip()
-                safe_name = "".join(
-                    c if c.isalnum() or c in ("-", "_") else "_" for c in company_name
-                )
-                pretty_path = pretty_dir / f"{idx:03d}_{safe_name}.json"
-                pretty_path.write_text(
-                    json.dumps(response_json, ensure_ascii=False, indent=2),
-                    encoding="utf-8",
-                )
-            print(
-                f"Processed {idx}/{len(companies)}: "
-                f"{company.get('Company Name', 'Unknown')}"
+    for idx, company in enumerate(companies, start=1):
+        prompt = build_prompt(company, context_files, context_dir=context_dir)
+        if dry_run:
+            response_text = "DRY_RUN: Gemini call skipped."
+        else:
+            response_text = call_gemini(
+                client=client,
+                model=effective_model,
+                prompt=prompt,
+                schema=schema,
             )
+        response_json = parse_json_response(response_text)
+        if response_json is not None:
+            if not wrote_output:
+                run_dir.mkdir(parents=True, exist_ok=True)
+                wrote_output = True
+            response_json = normalize_produced_by_products(response_json)
+            company_name = company.get("Company Name", f"company_{idx}").strip()
+            safe_name = "".join(
+                c if c.isalnum() or c in ("-", "_") else "_" for c in company_name
+            )
+            company_path = run_dir / f"{idx:03d}_{safe_name}.json"
+            company_path.write_text(
+                json.dumps(response_json, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+        print(
+            f"Processed {idx}/{len(companies)}: "
+            f"{company.get('Company Name', 'Unknown')}"
+        )
 
-    return output_path
+    if not wrote_output:
+        raise RuntimeError("No valid JSON outputs were generated.")
+
+    return run_dir
 
 
 def parse_args() -> argparse.Namespace:
@@ -439,7 +432,7 @@ def parse_args() -> argparse.Namespace:
         "--output-dir",
         type=Path,
         default=DEFAULT_OUTPUT_DIR,
-        help="Directory for output JSONL",
+        help="Directory for generated company profile folders",
     )
     parser.add_argument(
         "--dry-run",

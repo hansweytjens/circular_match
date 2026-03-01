@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/material_match_output.schema.json",
+  "title": "Material match output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["matches"],
+  "properties": {
+    "matches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_company",
+          "source_website",
+          "candidate_name",
+          "candidate_material",
+          "candidate_form",
+          "output_kind",
+          "target_product_or_service",
+          "match_type",
+          "required_processing",
+          "reasoning",
+          "confidence"
+        ],
+        "properties": {
+          "source_company": { "type": "string" },
+          "source_website": { "type": "string" },
+          "candidate_name": { "type": "string" },
+          "candidate_material": { "type": "string" },
+          "candidate_form": { "type": "string" },
+          "output_kind": { "type": "string" },
+          "target_product_or_service": { "type": "string" },
+          "match_type": {
+            "type": "string",
+            "enum": ["direct_use", "indirect_use"]
+          },
+          "required_processing": { "type": "string" },
+          "reasoning": { "type": "string" },
+          "confidence": {
+            "type": "string",
+            "enum": ["high", "medium", "low"]
+          }
+        }
+      }
+    }
+  }
+}
