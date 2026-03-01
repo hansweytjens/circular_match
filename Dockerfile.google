@@ -1,0 +1,21 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    APP_ROOT=/app \
+    CONTEXT_DIR=/data/context \
+    OUTPUT_ROOT=/data/output
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY scripts ./scripts
+COPY context ./context
+COPY docker/entrypoint.sh /usr/local/bin/app-entrypoint
+
+RUN chmod +x /usr/local/bin/app-entrypoint \
+    && mkdir -p /data/context /data/output/gemini_profiles /data/output/material_matches /data/output/databases
+
+ENTRYPOINT ["app-entrypoint"]

@@ -1,0 +1,14 @@
+.git
+.gitignore
+.devcontainer
+.env
+__pycache__/
+*/__pycache__/
+output/
+config/
+*.pyc
+*.pyo
+*.pyd
+Dockerfile
+WINDOWS_DOCKER_TEST.md
+INTERNAL_README.md

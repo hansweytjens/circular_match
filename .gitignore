@@ -1,3 +1,5 @@
 .codex-auth.json
 .env
 /output
+INTERNAL_README.md
+WINDOWS_DOCKER_TEST.md

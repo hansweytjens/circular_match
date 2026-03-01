@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from output_paths import GEMINI_PROFILES_DIR
+from runtime_paths import DEFAULT_CONTEXT_DIR
 
 
 DEFAULT_MODEL = "gemini-3-flash-preview"
@@ -28,7 +29,6 @@ PREFERRED_MODELS = [
     "gemini-2.0-flash-lite",
     "gemini-1.5-flash",
 ]
-DEFAULT_CONTEXT_DIR = Path("/workspace/context/active")
 DEFAULT_OUTPUT_DIR = GEMINI_PROFILES_DIR
 
 

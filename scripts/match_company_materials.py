@@ -10,6 +10,7 @@ from typing import Any
 
 from create_company_jsons import (
     DEFAULT_API_VERSION,
+    DEFAULT_CONTEXT_DIR,
     DEFAULT_MODEL,
     call_gemini,
     load_api_key,
@@ -23,7 +24,6 @@ from create_company_jsons import (
 from output_paths import DEFAULT_DB_PATH, MATERIAL_MATCHES_DIR
 
 
-DEFAULT_CONTEXT_DIR = Path("/workspace/context/active")
 DEFAULT_OUTPUT_DIR = MATERIAL_MATCHES_DIR
 
 
