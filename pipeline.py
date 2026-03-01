@@ -128,14 +128,21 @@ def render_specification_attributes(spec_desc: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def read_companies(csv_path: Path, n: int) -> List[Dict[str, str]]:
+def read_companies(
+    csv_path: Path,
+    n: int,
+    manufacturers: bool = False,
+) -> List[Dict[str, str]]:
     with csv_path.open("r", encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
         rows = []
-        for i, row in enumerate(reader):
-            if i >= n:
-                break
+        for row in reader:
+            nace_code = (row.get("NACE-BEL Code") or "").strip()
+            if manufacturers and nace_code != "C":
+                continue
             rows.append(row)
+            if len(rows) >= n:
+                break
     return rows
 
 
@@ -310,6 +317,7 @@ def run_pipeline(
     output_dir: Path,
     dry_run: bool,
     schema_path: Path | None,
+    manufacturers: bool,
 ) -> Path:
     context_files = load_context_files(context_dir)
     csv_path = context_dir / "Database Aalst - Sheet1.csv"
@@ -326,7 +334,7 @@ def run_pipeline(
     if not resolved_schema_path.exists():
         raise FileNotFoundError(f"Schema not found: {resolved_schema_path}")
 
-    companies = read_companies(csv_path, n)
+    companies = read_companies(csv_path, n, manufacturers=manufacturers)
     if not companies:
         raise RuntimeError("No company rows found in CSV")
     schema = resolve_local_schema_refs(
@@ -444,6 +452,11 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Path to JSON schema file (default: <context-dir>/schema.json)",
     )
+    parser.add_argument(
+        "--manufacturers",
+        action="store_true",
+        help="Only process companies with NACE-BEL Code 'C'",
+    )
     return parser.parse_args()
 
 
@@ -461,6 +474,7 @@ def main() -> None:
         output_dir=args.output_dir,
         dry_run=args.dry_run,
         schema_path=args.schema_path,
+        manufacturers=args.manufacturers,
     )
     print(f"Done. Output written to: {output_path}")
 
